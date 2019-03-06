@@ -1,0 +1,23 @@
+sudo: required
+dist: trusty
+language: python
+
+python:
+  - 2.7
+  - 3.4
+
+before_install:
+  - sudo apt-get update -qq
+  - sudo apt-get install -y xmount ewf-tools afflib-tools sleuthkit lvm2 mdadm cryptsetup libmagic1 avfs disktype squashfs-tools mtd-tools vmfs-tools
+  - sudo modprobe fuse
+
+install:
+  - sudo pip install -r requirements.txt
+  - sudo pip install -r tests/requirements.txt
+  - sudo pip install codecov tox-travis
+
+script:
+  - sudo tox
+
+after_success:
+  - codecov
