@@ -231,7 +231,7 @@ def main():
         for c in commands:
             print("    {0}".format(c))
         try:
-            input(">>> Press [enter] to continue or ^C to cancel... ")
+            # input(">>> Press [enter] to continue or ^C to cancel... ")
             unmounter.unmount()
         except KeyboardInterrupt:
             print("\n[-] Aborted.")
