@@ -37,7 +37,8 @@ if __name__ == "__main__":
             "This step may take much time,you can hash your images later manually.Do you still want to do this?[Y/N]")
         if input() == 'Y':
             hashFile.hashFile_MD5_SHA256(argv.inputFile)
-
+        bar.update(1)
+        osVersion = detectOS.detectOperationSystem(inputFile=argv.inputFile, mountDir=argv.mountDir)
         bar.update(1)
 
         mounting.unmountImage()

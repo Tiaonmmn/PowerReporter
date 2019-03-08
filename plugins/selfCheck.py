@@ -6,7 +6,7 @@ from loguru import logger
 
 
 class Checker:
-    def __init__(self, name, package="", reason=""):
+    def __init__(self, name="", package="", reason=""):
         self.name = name
         self.package = package
         self.reason = reason
@@ -28,7 +28,8 @@ class Checker:
             logger.info("Command %s found!" % self.name)
             return True
         else:
-            logger.critical("Command %s not found!It's for %s usage." % (self.name, self.reason))
+            logger.critical(
+                "Command %s not found!It's for %s usage in %s package." % (self.name, self.reason, self.package))
             return False
 
     def checkPackage(self):
@@ -53,36 +54,41 @@ class Checker:
 
 def selfCheck():
     logger.info("Self checking necessary tools!")
-    xmount = Checker("xmount", "xmount",
-                     "Tool to crossmount between multiple input and output harddisk image files").checkCommand()
-    ewfmount = Checker("ewfmount", "ewf-tools", "mount data stored in EWF files").checkCommand()
-    affuse = Checker("affuse", "afflib-tools", "provide access to AFF containers").checkCommand()
-    vmware_mount = Checker("vmware-mount", "VMware Workstation", "VMware DiskMount Utility").checkCommand()
-    mountavfs = Checker("mountavfs", "avfs", "Compressed disk images").checkCommand()
-    mmls = Checker("mmls", "sleuthkit",
-                   "Displays the layout of a disk, including the unallocated spaces").checkCommand()
-    fsstat = Checker("fsstat", "sleuthkit",
-                     "Shows file system details and statistics including layout, sizes, and labels").checkCommand()
-    file = Checker("file", "file", "determine file type").checkCommand()
-    blkid = Checker("blkid", "util-linux", "locate/print block device attributes").checkCommand()
-    parted = Checker("parted", "parted", "a partition manipulation program").checkCommand()
-    disktype = Checker("disktype", "disktype", "disk format detector").checkCommand()
-    mount_ntfs = Checker("mount.ntfs", "ntfs-3g", "Third Generation Read/Write NTFS Driver").checkCommand()
-    lvm = Checker("lvm", "lvm2", "LVM2 tools").checkCommand()
-    vmfs_fuse = Checker("vmfs-fuse", "vmfs-tools", "mount VMFS file system").checkCommand()
-    mdadm = Checker("mdadm", "mdadm", "manage MD devices aka Linux Software RAID").checkCommand()
-    cryptsetup = Checker("cryptsetup", "cryptsetup",
-                         "manage plain dm-crypt and LUKS encrypted volumes").checkCommand()
-    bdemount = Checker("bdemount", "libbde-utils",
-                       "mounts a BitLocker Drive Encryption (BDE) encrypted volume").checkCommand()
-    photorec = Checker("photorec", "testdisk",
-                       "Recover lost files from harddisk, digital camera and cdrom").checkCommand()
+    xmount = Checker(name="xmount", package="xmount",
+                     reason="Tool to crossmount between multiple input and output harddisk image files").checkCommand()
+    ewfmount = Checker(name="ewfmount", package="ewf-tools", reason="mount data stored in EWF files").checkCommand()
+    affuse = Checker(name="affuse", package="afflib-tools", reason="provide access to AFF containers").checkCommand()
+    vmware_mount = Checker(name="vmware-mount", package="VMware Workstation",
+                           reason="VMware DiskMount Utility").checkCommand()
+    mountavfs = Checker(name="mountavfs", package="avfs", reason="Compressed disk images").checkCommand()
+    mmls = Checker(name="mmls", package="sleuthkit",
+                   reason="Displays the layout of a disk, including the unallocated spaces").checkCommand()
+    fsstat = Checker(name="fsstat", package="sleuthkit",
+                     reason="Shows file system details and statistics including layout, sizes, and labels").checkCommand()
+    file = Checker(name="file", package="file", reason="determine file type").checkCommand()
+    blkid = Checker(name="blkid", package="util-linux", reason="locate/print block device attributes").checkCommand()
+    parted = Checker(name="parted", package="parted", reason="a partition manipulation program").checkCommand()
+    disktype = Checker(name="disktype", package="disktype", reason="disk format detector").checkCommand()
+    mount_ntfs = Checker(name="mount.ntfs", package="ntfs-3g",
+                         reason="Third Generation Read/Write NTFS Driver").checkCommand()
+    lvm = Checker(name="lvm", package="lvm2", reason="LVM2 tools").checkCommand()
+    vmfs_fuse = Checker(name="vmfs-fuse", package="vmfs-tools", reason="mount VMFS file system").checkCommand()
+    mdadm = Checker(name="mdadm", package="mdadm", reason="manage MD devices aka Linux Software RAID").checkCommand()
+    cryptsetup = Checker(name="cryptsetup", package="cryptsetup",
+                         reason="manage plain dm-crypt and LUKS encrypted volumes").checkCommand()
+    bdemount = Checker(name="bdemount", package="libbde-utils",
+                       reason="mounts a BitLocker Drive Encryption (BDE) encrypted volume").checkCommand()
+    photorec = Checker(name="photorec", package="testdisk",
+                       reason="Recover lost files from harddisk, digital camera and cdrom").checkCommand()
 
-    mount_squashfs = Checker("mount.squashfs", "squashfs-tools", "For squashfs volumes").checkPackage()
-    mount_xfs = Checker("mount.xfs", "xfsprogs", "For XFS volumes").checkPackage()
-    mount_jffs2 = Checker("mount.jffs2", "mtd-utils", "For JFFS2 volumes").checkPackage()
-    progressbar = Checker("progressbar", "progressbar", "progress bar").checkModule()
+    mount_squashfs = Checker(name="mount.squashfs", package="squashfs-tools",
+                             reason="For squashfs volumes").checkPackage()
+    mount_xfs = Checker(name="mount.xfs", package="xfsprogs", reason="For XFS volumes").checkPackage()
+    mount_jffs2 = Checker(name="mount.jffs2", package="mtd-utils", reason="For JFFS2 volumes").checkPackage()
 
+    progressbar = Checker(name="progressbar", package="progressbar", reason="progress bar").checkModule()
+    tqdm = Checker(name="tqdm", package="tqdm", reason="progress bar").checkModule()
+    termcolor = Checker(name="termcolor", package="termcolor", reason="terminal color").checkModule()
     # results = [*locals()]
     result = locals()
     for key in result:

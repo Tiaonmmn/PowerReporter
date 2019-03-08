@@ -106,5 +106,24 @@ class detectOS:
                         except FileNotFoundError:
                             logger.critical("Couldn't find Linux issue file!")
                             return None
-                        logger.info()
+                        logger.info("Found linux veriosn {0}".format(version))
+                        return version.strip()
+
+
+def detectOperationSystem(inputFile=None, mountDir=None):
+    detector = detectOS(inputFile=inputFile, mountDir=mountDir)
+    result = detector.detectOldWindowsVer1()
+    if result is None:
         pass
+    else:
+        return result
+    result = detector.detectNTWindowsVer1()
+    if result is None:
+        pass
+    else:
+        return result
+    result = detector.detectLinuxVer1()
+    if result is None:
+        pass
+    else:
+        return result

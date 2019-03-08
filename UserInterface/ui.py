@@ -24,7 +24,7 @@ Options:
     -h          --help              show this message.
     -c          --check             Check local system for necessary tools.
     -i          --input             Input image file.
-    -m          --mountDir          Image mounting directory
+    -m          --mountDir          Image mounting directory.(Default value:/tmp/)
     -o          --output            Output report file.(P.S. In HTML format.)
 '''
     VERSION = "2019.2"

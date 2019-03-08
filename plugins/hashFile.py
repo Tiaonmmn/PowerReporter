@@ -7,7 +7,7 @@ from tqdm import tqdm
 
 
 class hashFile:
-    def __init__(self, inputFile):
+    def __init__(self, inputFile=None):
         self.inputFile = inputFile
 
     def md5Hash(self):
@@ -37,7 +37,7 @@ class hashFile:
             logger.info("SHA256 hash of file %s is %s" % (self.inputFile, hash_sha256.hexdigest()))
 
 
-def hashFile_MD5_SHA256(inputFile):
+def hashFile_MD5_SHA256(inputFile=None):
     a = hashFile(inputFile)
     pool = multiprocessing.Pool(2)
     pool.apply_async(a.md5Hash())
