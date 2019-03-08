@@ -1,6 +1,7 @@
 import os
 from loguru import logger
 import subprocess
+from Registry import Registry
 
 
 class detectOS:
@@ -35,28 +36,75 @@ class detectOS:
                 pass
             else:
                 result.append(description + " " + index[-1])
+        return result
 
-        def detectOldWindows(self):
-            output = self.detectVolumeType()
-            for line in output:
-                if "FAT" in line:
-                    for names in os.listdir(self.mountDir):
-                        if line[-1] in names.split("_")[1]:
-                            os.chdir(self.mountDir + names)
+    def detectOldWindowsVer1(self):
+        output = self.detectVolumeType()
+        for line in output:
+            if "FAT" in line:
+                for names in os.listdir(self.mountDir):
+                    if line[-1] in names.split("_")[1]:
+                        os.chdir(self.mountDir + names)
+                        try:
+                            msdos = open("MSDOS.SYS").readlines()
+                        except FileNotFoundError:
+                            return None
+                        for msdosline in msdos:
+                            if "Winver" in msdosline:
+                                version = msdosline.split("=")[-1]
+                                logger.info("Found Windows version {0}".format(version))
+                                if version == "4.00.0950": return "Windows 95"
+                                if version == "4.00.1111": return "Windows 95 OSR2"
+                                if version == "4.03.1212": return "Windows 95 OSR2.1"
+                                if version == "4.03.1214": return "Windows 95 OSR2.5"
+                                if version == "4.10.1998": return "Windows 98"
+                                if version == "4.10.2222": return "Windows 98 SE"
+                                if version == "4.90.3000":
+                                    return "Windows ME"
+                                else:
+                                    return "Windows NT"
+
+    def detectNTWindowsVer1(self):  # TODO:For now we hard-coded the registry file location.Should determine it.
+        output = self.detectVolumeType()
+
+        for line in output:
+            if "FAT" in line or "NTFS" in line:
+                for names in os.listdir(self.mountDir):
+                    if line[-1] in names.split("_")[1]:
+                        os.chdir(self.mountDir + names)
+                        try:
                             try:
-                                msdos = open("MSDOS.SYS").readlines()
+                                registry = Registry.Registry("Windows/System32/config/software")
                             except FileNotFoundError:
-                                continue
-                            for msdosline in msdos:
-                                if "Winver" in msdosline:
-                                    version = msdosline.split("=")[-1]
-                                    if version == "4.00.0950": return "Windows 95"
-                                    if version == "4.00.1111": return "Windows 95 OSR2"
-                                    if version == "4.03.1212": return "Windows 95 OSR2.1"
-                                    if version == "4.03.1214": return "Windows 95 OSR2.5"
-                                    if version == "4.10.1998": return "Windows 98"
-                                    if version == "4.10.2222": return "Windows 98 SE"
-                                    if version == "4.90.3000":
-                                        return "Windows ME"
-                                    else:
-                                        return "Windows NT"
+                                registry = Registry.Registry("Windows/System32/config/SOFTWARE")
+                        except FileNotFoundError:
+                            logger.critical("Couldn't find registry file!")
+                            return None
+                        osInfo = registry.open("Microsoft\\Windows NT\\CurrentVersion")
+                        logger.info("Now listing Windows NT Version info using registry method!")
+                        for detail in osInfo.values():
+                            logger.info(
+                                "{0:30}     {1:10}     {2}" % (detail.name(), detail.value_type_str(), detail.value()))
+                            if "Windows 2000" in detail.value(): return "Windows 2000"
+                            if "Windows XP" in detail.value(): return "Windows XP"
+                            if "Windows Vista" in detail.value(): return "Windows Vista"
+                            if "Windows 8" in detail.value(): return "Windows 8"
+                            if "Windows 10" in detail.value(): return "Windows 10"
+
+    def detectLinuxVer1(self):
+        output = self.detectVolumeType()
+
+        for line in output:
+            if "FAT" in line or "NTFS" in line:
+                pass
+            else:
+                for names in os.listdir(self.mountDir):
+                    if line[-1] in names.split("_")[1]:
+                        os.chdir(self.mountDir + names)
+                        try:
+                            version = open("etc/issue").read()
+                        except FileNotFoundError:
+                            logger.critical("Couldn't find Linux issue file!")
+                            return None
+                        logger.info()
+        pass
