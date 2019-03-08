@@ -35,10 +35,15 @@ if __name__ == "__main__":
         logger.info("Step 1.Hashing files.")
         logger.warning(
             "This step may take much time,you can hash your images later manually.Do you still want to do this?[Y/N]")
-        if input() == 'Y':
+        if input().upper() == 'Y':
             hashFile.hashFile_MD5_SHA256(argv.inputFile)
         bar.update(1)
+        logger.info("Step 2.Detecting Operating System.")
         osVersion = detectOS.detectOperationSystem(inputFile=argv.inputFile, mountDir=argv.mountDir)
         bar.update(1)
+        logger.info("Step 3.Showing Time Zone Info.")
+        timezoneInfo.timezoneInfo(inputFile=argv.inputFile, mountDir=argv.mountDir).showtimezoneInfo()
 
-        mounting.unmountImage()
+        # os.chdir(os.path.dirname(os.path.realpath(__file__)))
+        # os.system("lsof|grep %s"%argv.mountDir)
+        # mounting.unmountImage(argv.mountDir)

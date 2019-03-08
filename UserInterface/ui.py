@@ -36,7 +36,7 @@ Options:
         self.inputFile = None
         self.outputFile = None
         self.selfCheck = 0
-        self.mountDir = None
+        self.mountDir = "/tmp"
         self.checkArgv()
 
     def checkArgv(self):
@@ -86,6 +86,7 @@ Options:
                 else:
                     logger.error("The mountDir %s doesn't have enough permission!Please check it!" % self.mountDir)
                     exit(-3)
+
         return
 
     def usage(self):

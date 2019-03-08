@@ -1,1 +1,1 @@
-__all__ = ['selfCheck', 'mounting', 'hashFile', 'detectOS']
+__all__ = ['selfCheck', 'mounting', 'hashFile', 'detectOS', 'timezoneInfo']
