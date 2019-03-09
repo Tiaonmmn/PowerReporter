@@ -1,36 +1,34 @@
 import os
-from Registry import Registry
-from . import detectOS
-from loguru import logger
 from struct import *
+
+from Registry import Registry
+from loguru import logger
 
 
 class timezoneInfo:
-    def __init__(self, inputFile=None, mountDir=None):
+    def __init__(self, inputFile: str, mountDir: str, volumeInfo: str):
         self.mountDir = mountDir
         self.inputFile = inputFile
+        self.volumeInfo = volumeInfo
 
-    def showtimezoneInfo(self):
-        detector = detectOS.detectOS(inputFile=self.inputFile, mountDir=self.mountDir).detectVolumeType()
-        for line in detector:
-            if "FAT" in line or "NTFS" in line:
-                for names in os.listdir(self.mountDir):
-                    logger.debug("Entering dir %s" % (self.mountDir + "/" + names))
-                    if line[-1] in names.split("_")[1]:
-                        os.chdir(self.mountDir + "/" + names)
-                        try:
-                            try:
-                                registry = Registry.Registry("Windows/System32/config/system")
-                            except FileNotFoundError:
-                                registry = Registry.Registry("Windows/System32/config/SYSTEM")
-                        except FileNotFoundError:
-                            logger.critical("Couldn't find registry file!")
-                            continue
-                        selectCurrent = registry.open("Select").value("Current").value()
-                        # print(registry.open("Select").values())
-                        timezone = registry.open("ControlSet00%d\\Control\\TimeZoneInformation" % selectCurrent)
-                        logger.debug("Now listing Windows NT TimeZone Information using registry!")
-                        logger.info("Timezone name:     " + timezone.value("TimeZoneKeyName").value())
-
-                        logger.info("Timezone bias:     %d minutes" %
-                                    (unpack("i", pack("I", int(timezone.value("ActiveTimeBias").value()))))[0])
+    def showTimeZoneInfo(self):
+        output = self.volumeInfo
+        if "FAT" or "NTFS" in output.split(" ")[0]:
+            os.chdir("%s/%s" % (self.mountDir, output.split(" ")[2]))
+            try:
+                try:
+                    registry = Registry.Registry("Windows/System32/config/system")
+                except FileNotFoundError:
+                    registry = Registry.Registry("Windows/System32/config/SYSTEM")
+            except FileNotFoundError:
+                logger.warning("Couldn't find registry file!")
+                return None
+            select_current = registry.open("Select").value("Current").value()
+            timezone = registry.open("ControlSet00%d\\Control\\TimeZoneInformation" % select_current)
+            logger.debug("Now listing Windows NT TimeZone Information using registry!")
+            logger.info("Timezone name:     " + timezone.value("TimeZoneKeyName").value())
+            bias = unpack("i", pack("I", int(timezone.value("ActiveTimeBias").value())))[0] / 60
+            if bias < 0:
+                logger.info("Timezone bias:     (UTC)+0%d hours" % bias)
+            else:
+                logger.info("Timezone bias:     (UTC)-0%d hours" % bias)

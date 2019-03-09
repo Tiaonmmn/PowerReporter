@@ -28,21 +28,30 @@ if __name__ == "__main__":
         selfCheck.selfCheck()
         exit(0)
     else:
-        mounting.mountImage(inputFile=argv.inputFile, mountDir=argv.mountDir)
+        volumeInfo = mounting.mountImage(inputFile=argv.inputFile, mountDir=argv.mountDir).getVolumeDirectory()
         # TODO:Fuck images!!!!!!
         logger.critical("Now let's do this!")
-        bar = tqdm(total=12)  # TODO: Modify this!!!
+        bar = tqdm(total=1 + len(volumeInfo) * 12)  # TODO: Modify this!!!
         logger.info("Step 1.Hashing files.")
         logger.warning(
             "This step may take much time,you can hash your images later manually.Do you still want to do this?[Y/N]")
         if input().upper() == 'Y':
             hashFile.hashFile_MD5_SHA256(argv.inputFile)
         bar.update(1)
-        logger.info("Step 2.Detecting Operating System.")
-        osVersion = detectOS.detectOperationSystem(inputFile=argv.inputFile, mountDir=argv.mountDir)
-        bar.update(1)
-        logger.info("Step 3.Showing Time Zone Info.")
-        timezoneInfo.timezoneInfo(inputFile=argv.inputFile, mountDir=argv.mountDir).showtimezoneInfo()
+        if len(volumeInfo) > 1:
+            logger.critical("Image file has multiple volumes.And we should check them one by one.")
+        else:
+            logger.critical("Image file has single volume.We are working on it.")
+        for volume in volumeInfo:
+            logger.info("Step 2.Detecting Operating System on volume directory %s." % (volume.split(" ")[1]))
+            osVersion = detectOS.detectOperationSystem(inputFile=argv.inputFile, volumeInfo=volume,
+                                                       mountDir=argv.mountDir)
+            bar.update(1)
+            logger.info("Step 3.Showing Time Zone Info.")
+            timezoneInfo.timezoneInfo(inputFile=argv.inputFile, volumeInfo=volume,
+                                      mountDir=argv.mountDir).showTimeZoneInfo()
+            bar.update(1)
+
 
         # os.chdir(os.path.dirname(os.path.realpath(__file__)))
         # os.system("lsof|grep %s"%argv.mountDir)
