@@ -15,11 +15,12 @@ import sys
 
 from loguru import logger
 from tqdm import tqdm
-
+import subprocess
 from UserInterface.ui import Usage
 from plugins import *
 
 if __name__ == "__main__":
+    count = 0
     argv = Usage(sys.argv[1:])
     if os.geteuid() != 0:
         exit(
@@ -27,32 +28,48 @@ if __name__ == "__main__":
     if argv.selfCheck == 1:
         selfCheck.selfCheck()
         exit(0)
+    umountOutput = subprocess.getoutput(os.path.dirname(os.path.realpath(__file__)) + "/imagemounter/imount.py -u")
+    logger.error(umountOutput)
+    volumeInfo = mounting.mountImage(inputFile=argv.inputFile, mountDir=argv.mountDir).getVolumeDirectory()
+    # TODO:Fuck images!!!!!!
+    logger.critical("Now let's do this!")
+    bar = tqdm(total=1 + len(volumeInfo) * 12)  # TODO: Modify this!!!
+    count += 1
+    logger.info("Step %d.Hashing files." % count)
+    logger.warning(
+        "This step may take much time,you can hash your images later manually.Do you still want to do this?[Y/N]")
+    if input().upper() == 'Y':
+        hashFile.hashFile_MD5_SHA256(argv.inputFile)
+    bar.update(1)
+    if len(volumeInfo) > 1:
+        logger.critical("Image file has multiple volumes.And we should check them one by one.")
     else:
-        volumeInfo = mounting.mountImage(inputFile=argv.inputFile, mountDir=argv.mountDir).getVolumeDirectory()
-        # TODO:Fuck images!!!!!!
-        logger.critical("Now let's do this!")
-        bar = tqdm(total=1 + len(volumeInfo) * 12)  # TODO: Modify this!!!
-        logger.info("Step 1.Hashing files.")
-        logger.warning(
-            "This step may take much time,you can hash your images later manually.Do you still want to do this?[Y/N]")
-        if input().upper() == 'Y':
-            hashFile.hashFile_MD5_SHA256(argv.inputFile)
+        logger.critical("Image file has single volume.We are working on it.")
+    for volume in volumeInfo:
+        logger.error("showing volume %s" % volume)
+        count += 1
+        logger.info("Step %d.Detecting Operating System on volume %s." % (count, volume.split(" ")[1]))
+        osVersion = detectOS.detectOperationSystem(volumeInfo=volume,
+                                                   mountDir=argv.mountDir)
         bar.update(1)
-        if len(volumeInfo) > 1:
-            logger.critical("Image file has multiple volumes.And we should check them one by one.")
-        else:
-            logger.critical("Image file has single volume.We are working on it.")
-        for volume in volumeInfo:
-            logger.info("Step 2.Detecting Operating System on volume directory %s." % (volume.split(" ")[1]))
-            osVersion = detectOS.detectOperationSystem(inputFile=argv.inputFile, volumeInfo=volume,
-                                                       mountDir=argv.mountDir)
-            bar.update(1)
-            logger.info("Step 3.Showing Time Zone Info.")
-            timezoneInfo.timezoneInfo(inputFile=argv.inputFile, volumeInfo=volume,
-                                      mountDir=argv.mountDir).showTimeZoneInfo()
-            bar.update(1)
-
-
+        count += 1
+        logger.info("Step %d.Showing Time Zone Info on volume %s." % (count, volume.split(" ")[1]))
+        timezoneInfo.timezoneInfo(volumeInfo=volume,
+                                  mountDir=argv.mountDir).showTimeZoneInfo()
+        bar.update(1)
+        count += 1
+        logger.info("Step %d.Showing Computer Name Info on volume %s." % (count, volume.split(" ")[1]))
+        computerName.computerName(volumeInfo=volume,
+                                  mountDir=argv.mountDir).showComputerName()
+        bar.update(1)
+        count += 1
+        logger.info("Step %d.Showing User Account Info on volume %s." % (count, volume.split(" ")[1]))
+        samParse.userAccountParse(mountDir=argv.mountDir, volumeInfo=volume)
+        bar.update(1)
+        count += 1
+        logger.info("Step %d.Showing Last Logged User Name on volume %s." % (count, volume.split(" ")[1]))
+        lastLogon.lastLogon(mountDir=argv.mountDir, volumeInfo=volume).getLastLoggedInfo()
+        bar.update(1)
         # os.chdir(os.path.dirname(os.path.realpath(__file__)))
         # os.system("lsof|grep %s"%argv.mountDir)
         # mounting.unmountImage(argv.mountDir)

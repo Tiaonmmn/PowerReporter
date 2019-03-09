@@ -5,9 +5,8 @@ from loguru import logger
 
 
 class detectOS:
-    def __init__(self, inputFile: str, volumeInfo: str, mountDir: str):
+    def __init__(self, volumeInfo: str, mountDir: str):
         self.volumeInfo = volumeInfo
-        self.inputFile = inputFile
         self.mountDir = mountDir
 
     def detectOldWindowsVer1(self) -> str:
@@ -75,8 +74,8 @@ class detectOS:
             return version.strip()
 
 
-def detectOperationSystem(inputFile=None, mountDir=None, volumeInfo=None):
-    detector = detectOS(inputFile=inputFile, mountDir=mountDir, volumeInfo=volumeInfo)
+def detectOperationSystem(mountDir=None, volumeInfo=None):
+    detector = detectOS(mountDir=mountDir, volumeInfo=volumeInfo)
     result = detector.detectOldWindowsVer1()
     if result is None:
         pass

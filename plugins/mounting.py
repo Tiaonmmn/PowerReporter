@@ -68,7 +68,7 @@ class mounting:
         directoryNames = os.listdir(self.mountDir)
         for name in directoryNames:
             for result in results:
-                if result[-1] in name:
+                if result[-1] == name.split("_")[1]:
                     volumeInfo.append(
                         "%s %s %s" % (result.split(" ")[0], result.split(" ")[1],
                                       name))  # return a string:[volume fs] [volume index] [volume directory]

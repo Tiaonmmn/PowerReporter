@@ -6,21 +6,19 @@ from loguru import logger
 
 
 class timezoneInfo:
-    def __init__(self, inputFile: str, mountDir: str, volumeInfo: str):
+    def __init__(self, mountDir: str, volumeInfo: str):
         self.mountDir = mountDir
-        self.inputFile = inputFile
         self.volumeInfo = volumeInfo
 
     def showTimeZoneInfo(self):
         output = self.volumeInfo
         if "FAT" or "NTFS" in output.split(" ")[0]:
             os.chdir("%s/%s" % (self.mountDir, output.split(" ")[2]))
-            try:
-                try:
-                    registry = Registry.Registry("Windows/System32/config/system")
-                except FileNotFoundError:
-                    registry = Registry.Registry("Windows/System32/config/SYSTEM")
-            except FileNotFoundError:
+            if os.access("Windows/System32/config/system", os.F_OK | os.R_OK):
+                registry = Registry.Registry("Windows/System32/config/system")
+            elif os.access("Windows/System32/config/SYSTEM", os.F_OK | os.R_OK):
+                registry = Registry.Registry("Windows/System32/config/SYSTEM")
+            else:
                 logger.warning("Couldn't find registry file!")
                 return None
             select_current = registry.open("Select").value("Current").value()

@@ -80,6 +80,8 @@ def selfCheck():
                        reason="mounts a BitLocker Drive Encryption (BDE) encrypted volume").checkCommand()
     photorec = Checker(name="photorec", package="testdisk",
                        reason="Recover lost files from harddisk, digital camera and cdrom").checkCommand()
+    samdump2 = Checker(name="samdump2", package="samdump2",
+                       reason="retrieves syskey and extract hashes from Windows 2k/NT/XP/Vista SAM.").checkCommand()
 
     mount_squashfs = Checker(name="mount.squashfs", package="squashfs-tools",
                              reason="For squashfs volumes").checkPackage()
@@ -88,7 +90,10 @@ def selfCheck():
 
     progressbar = Checker(name="progressbar", package="progressbar", reason="progress bar").checkModule()
     tqdm = Checker(name="tqdm", package="tqdm", reason="progress bar").checkModule()
+    registry = Checker(name="python-registry", package="Registry",
+                       reason="Python parser of Windows registry").checkModule()
     termcolor = Checker(name="termcolor", package="termcolor", reason="terminal color").checkModule()
+    evtx = Checker(name="python-Evtx", package="Evtx", reason="Parser for Windows new version event logs")
     # results = [*locals()]
     result = locals()
     for key in result:
