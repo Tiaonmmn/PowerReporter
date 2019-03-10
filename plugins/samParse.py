@@ -305,11 +305,11 @@ def userAccountParse(mountDir=None, volumeInfo=None):
         logger.info("----- %s -----" % user)
         for key, value in results['users'][user].items():
             if value != '':
-                logger.info(str(key) + " : " + str(value))
+                logger.info("{0:25} : {1}".format(str(key), str(value)))
         for lines in samdump2_output.splitlines():
             username = lines.split(":")[0]
             if user.decode() in username:
-                logger.info("Password Hash" + " : " + lines.split(":")[2] + " : " + lines.split(":")[3])
+                logger.info("{0:25} : {1} : {2}".format("Password Hash", lines.split(":")[2], lines.split(":")[3]))
 
     for group in results['groups']:
         logger.info("----- %s -----" % group)

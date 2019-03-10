@@ -37,12 +37,11 @@ class detectOS:
         output = self.volumeInfo
         if "FAT" or "NTFS" in output.split(" ")[0]:
             os.chdir("%s/%s" % (self.mountDir, output.split(" ")[2]))
-            try:
-                try:
-                    registry = Registry.Registry("Windows/System32/config/software")
-                except FileNotFoundError:
-                    registry = Registry.Registry("Windows/System32/config/SOFTWARE")
-            except FileNotFoundError:
+            if os.access("Windows/System32/config/software", os.R_OK | os.F_OK):
+                registry = Registry.Registry("Windows/System32/config/software")
+            elif os.access("Windows/System32/config/SOFTWARE", os.R_OK | os.F_OK):
+                registry = Registry.Registry("Windows/System32/config/SOFTWARE")
+            else:
                 logger.warning("Couldn't find registry file on %s!" % ("%s/%s" % (self.mountDir, output.split(" ")[2])))
                 return None
             osInfo = registry.open("Microsoft\\Windows NT\\CurrentVersion")

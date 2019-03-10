@@ -10,7 +10,7 @@ class timezoneInfo:
         self.mountDir = mountDir
         self.volumeInfo = volumeInfo
 
-    def showTimeZoneInfo(self):
+    def getTimeZoneInfo(self):
         output = self.volumeInfo
         if "FAT" or "NTFS" in output.split(" ")[0]:
             os.chdir("%s/%s" % (self.mountDir, output.split(" ")[2]))
@@ -19,7 +19,7 @@ class timezoneInfo:
             elif os.access("Windows/System32/config/SYSTEM", os.F_OK | os.R_OK):
                 registry = Registry.Registry("Windows/System32/config/SYSTEM")
             else:
-                logger.warning("Couldn't find registry file!")
+                logger.warning("Couldn't find SYSTEM registry file!")
                 return None
             select_current = registry.open("Select").value("Current").value()
             timezone = registry.open("ControlSet00%d\\Control\\TimeZoneInformation" % select_current)
@@ -30,3 +30,21 @@ class timezoneInfo:
                 logger.info("Timezone bias:     (UTC)+0%d hours" % bias)
             else:
                 logger.info("Timezone bias:     (UTC)-0%d hours" % bias)
+
+    def getTimeZoneBias(self):
+        output = self.volumeInfo
+        if "FAT" or "NTFS" in output.split(" ")[0]:
+            os.chdir("%s/%s" % (self.mountDir, output.split(" ")[2]))
+            if os.access("Windows/System32/config/system", os.F_OK | os.R_OK):
+                registry = Registry.Registry("Windows/System32/config/system")
+            elif os.access("Windows/System32/config/SYSTEM", os.F_OK | os.R_OK):
+                registry = Registry.Registry("Windows/System32/config/SYSTEM")
+            else:
+                logger.warning("Couldn't find SYSTEM registry file!")
+                return None
+            select_current = registry.open("Select").value("Current").value()
+            timezone = registry.open("ControlSet00%d\\Control\\TimeZoneInformation" % select_current)
+            logger.debug("Now listing Windows NT TimeZone Information using registry!")
+            logger.info("Timezone name:     " + timezone.value("TimeZoneKeyName").value())
+            bias = unpack("i", pack("I", int(timezone.value("ActiveTimeBias").value())))[0] / 60
+            return bias  # TODO:Bias may be negative or positive!

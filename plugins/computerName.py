@@ -13,13 +13,12 @@ class computerName:
         output = self.volumeInfo
         if "FAT" or "NTFS" in output.split(" ")[0]:
             os.chdir("%s/%s" % (self.mountDir, output.split(" ")[2]))
-            try:
-                try:
-                    registry = Registry.Registry("Windows/System32/config/system")
-                except FileNotFoundError:
-                    registry = Registry.Registry("Windows/System32/config/SYSTEM")
-            except FileNotFoundError:
-                logger.warning("Couldn't find registry file!")
+            if os.access("Windows/System32/config/system", os.F_OK | os.R_OK):
+                registry = Registry.Registry("Windows/System32/config/system")
+            elif os.access("Windows/System32/config/SYSTEM", os.F_OK | os.R_OK):
+                registry = Registry.Registry("Windows/System32/config/SYSTEM")
+            else:
+                logger.warning("Couldn't find SYSTEM registry file!")
                 return None
             select_current = registry.open("Select").value("Current").value()
             computerName1 = registry.open("ControlSet00%d\\Control\\ComputerName" % select_current)

@@ -1,9 +1,10 @@
 import os
 import subprocess
 from loguru import logger
-import Evtx.Evtx
+import Evtx.Evtx as evtx
 import Evtx.Views
 from xml.dom.minidom import parseString
+import copy
 import xml.dom.minidom
 
 
@@ -29,18 +30,29 @@ class startTime:
         else:
             for line in subprocess.getoutput("find . -name *.evt -print").splitlines():
                 findOutput.append(line)
-        logger.error(findOutput)
         return findOutput
 
     def getSystemStartTime(self):
+        lastTime = None
         logger.warning(
-            "Showing System StartTime using Windows Event Log,but it may be inaccurate.Details seen in the paper!")
+            "Now Showing System StartTime using Windows Event Log,but it may be inaccurate.Details seen in the paper!")
         if "Windows Vista" or "Windows 7" or "Windows 8" or "Windows 10" in self.osVersion:
             for eventFile in self.getEvtxFiles():
-                with Evtx.Evtx(eventFile) as log:
+                with evtx.Evtx(eventFile) as log:
                     for record in log.records():
                         domTree = parseString(record.xml())
                         id = domTree.documentElement.getElementsByTagName("EventID")[0].childNodes[0].data
                         if id == "6005":
                             time = domTree.documentElement.getElementsByTagName("TimeCreated")[0].getAttribute(
                                 "SystemTime")
+                            if lastTime is None:
+                                lastTime = domTree.documentElement.getElementsByTagName("TimeCreated")[0].getAttribute(
+                                    "SystemTime")
+                            if time < lastTime:
+                                pass
+                            else:
+                                lastTime = copy.deepcopy(time)
+        if lastTime is None:
+            logger.warning("Couldn't find system start time!")
+        else:
+            logger.info("Last system start time(Event Log Service start time) is: %s" % lastTime)
