@@ -84,6 +84,18 @@ if __name__ == "__main__":
         logger.info("Step %d.Showing Network Device Information on volume %s." % (count, volume.split(" ")[1]))
         networkDevice.networkDevice(mountDir=argv.mountDir, volumeInfo=volume).getNetworkDeviceInfo()
         bar.update(1)
+        count += 1
+        logger.info(
+            "Step %d.Showing Operating System Installed Date Information on volume %s." % (count, volume.split(" ")[1]))
+        osInstalledTime.osInstalledTime(mountDir=argv.mountDir, volumeInfo=volume, bias=bias).getOSInstalledTime()
+        bar.update(1)
+        count += 1
+        logger.info(
+            "Step %d.Showing Operating System Installed Applications Information on volume %s." % (
+                count, volume.split(" ")[1]))
+        installedSoftware.installedSoftware(mountDir=argv.mountDir, volumeInfo=volume).getInstalledSoftwareInfoWin64()
+        installedSoftware.installedSoftware(mountDir=argv.mountDir, volumeInfo=volume).getInstalledSoftwareInfoWin32()
+        bar.update(1)
         # os.chdir(os.path.dirname(os.path.realpath(__file__)))
         # os.system("lsof|grep %s"%argv.mountDir)
         # mounting.unmountImage(argv.mountDir)

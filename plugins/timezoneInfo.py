@@ -25,11 +25,15 @@ class timezoneInfo:
             timezone = registry.open("ControlSet00%d\\Control\\TimeZoneInformation" % select_current)
             logger.debug("Now listing Windows NT TimeZone Information using registry!")
             logger.info("Timezone name:     " + timezone.value("TimeZoneKeyName").value())
-            bias = unpack("i", pack("I", int(timezone.value("ActiveTimeBias").value())))[0] / 60
-            if bias < 0:
-                logger.info("Timezone bias:     (UTC)+0%d hours" % bias)
-            else:
-                logger.info("Timezone bias:     (UTC)-0%d hours" % bias)
+            bias = unpack("i", pack("I", int(timezone.value("Bias").value())))[0] / 60
+            dayLightBias = unpack("i", pack("I", int(timezone.value("DaylightBias").value())))[0] / 60
+            activeBias = unpack("i", pack("I", int(timezone.value("ActiveTimeBias").value())))[0] / 60
+            # If activeBias is positive,it really means -0X:00 delta in real world.
+
+        if activeBias < 0:
+            logger.info("Timezone real bias:     (UTC)+0%d hours" % activeBias)
+        else:
+            logger.info("Timezone real bias:     (UTC)-0%d hours" % activeBias)
 
     def getTimeZoneBias(self):
         output = self.volumeInfo
