@@ -1,3 +1,4 @@
+__author__ = "Tiaonmmn.ZMZ"
 import hashlib
 import os
 

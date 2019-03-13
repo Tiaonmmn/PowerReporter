@@ -45,7 +45,7 @@ class samParse:
             a = int(high * 429.4967296 + low / 1e7)
         if a < 0:
             return "Never"
-        return datetime.datetime.utcfromtimestamp(a).strftime('%d %B %Y - %H:%M:%S')
+        return datetime.datetime.utcfromtimestamp(a).strftime('%Y %m %d - %H:%M:%S')
 
     # parses the hive and returns it as a dictionary.
     def samparse(self, samhive):
@@ -94,7 +94,7 @@ class samParse:
             if x.name() == "Names":
                 for a in x.subkeys():
                     results['users'][a.name().encode()]['Account Created Date'] = a.timestamp().strftime(
-                        '%d %B %Y - %H:%M:%S')
+                        '%Y %m %d - %H:%M:%S')
             else:
                 for a in x.values():
                     # F comes before V, and since we're using usernames, F will store in a temporary dict
@@ -152,10 +152,11 @@ class samParse:
                         results['users'][username] = OrderedDict()
 
                         results['users'][username]['Full Name'] = data[(fullname_ofst + 0xCC):(
-                                fullname_ofst + 0xCC + fullname_lngth)]
+                                fullname_ofst + 0xCC + fullname_lngth)].decode()
                         results['users'][username]['Comment'] = data[
                                                                 (comment_ofst + 0xCC):(
-                                                                        comment_ofst + 0xCC + comment_lngth)]
+                                                                        comment_ofst + 0xCC + comment_lngth)].decode(
+                            "utf-16")
                         for acctype in types:
                             if account_type == int(acctype):
                                 results['users'][username]['Account Type'] = types[acctype]
@@ -213,7 +214,7 @@ class samParse:
                 groupname = data[(name_offst + 52):(name_offst + 52 + name_length)]
                 results['groups'][groupname] = OrderedDict()
                 results['groups'][groupname]['Group Description'] = data[(comment_offst + 52):(
-                        comment_offst + 52 + comment_lngth)]
+                        comment_offst + 52 + comment_lngth)].decode('utf-16')
                 results['groups'][groupname]['Last Write'] = x.timestamp()
                 results['groups'][groupname]['User Count'] = user_count
                 results['groups'][groupname]['Members'] = ''
@@ -302,7 +303,7 @@ def userAccountParse(mountDir=None, volumeInfo=None):
                 "samdump2 %s %s" % ("Windows/System32/config/SYSTEM", "Windows/System32/config/SAM"))
 
     for user in results['users']:
-        logger.info("----- %s -----" % user)
+        logger.info("----- %s -----" % user.decode())
         for key, value in results['users'][user].items():
             if value != '':
                 logger.info("{0:25} : {1}".format(str(key), str(value)))
@@ -312,7 +313,7 @@ def userAccountParse(mountDir=None, volumeInfo=None):
                 logger.info("{0:25} : {1} : {2}".format("Password Hash", lines.split(":")[2], lines.split(":")[3]))
 
     for group in results['groups']:
-        logger.info("----- %s -----" % group)
+        logger.info("----- %s -----" % group.decode("utf-16"))
         for key, value in results['groups'][group].items():
             if value != '':
                 logger.info(str(key) + " : " + str(value))

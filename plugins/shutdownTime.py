@@ -29,4 +29,4 @@ class shutdownTime:
             logger.debug("Now listing Windows NT Last Shutdown Time using registry!")
             lastshutdownTime = filetimeParse.filetimeParse(lastshutdown.value("ShutdownTime").value())
             bias = datetime.timedelta(hours=-self.bias)
-            logger.info("Last recorded shutdown time:     " + (lastshutdownTime + bias).strftime('%d %B %Y - %H:%M:%S'))
+            logger.info("Last recorded shutdown time:     " + (lastshutdownTime + bias).strftime('%Y %m %d - %H:%M:%S'))

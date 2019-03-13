@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+# -*- coding: utf-8 -*-
 '''
 Firstly,it's a really simple,foolish,easy toy.
 For Paper!
@@ -9,10 +10,10 @@ We don't implement dynamic module loading for now.
 Now,we have an idea of directly mount the image and search for info,which requires for many loads of disk space.
 
 '''
-
+__author__ = "Tiaonmmn.ZMZ"
 import os
 import sys
-
+import random
 from loguru import logger
 from tqdm import tqdm
 import subprocess
@@ -29,17 +30,20 @@ if __name__ == "__main__":
         selfCheck.selfCheck()
         exit(0)
     umountOutput = subprocess.getoutput(os.path.dirname(os.path.realpath(__file__)) + "/imagemounter/imount.py -u")
-    logger.error(umountOutput)
+    if "[+] Nothing to do" in umountOutput:
+        pass
+    else:
+        subprocess.getoutput(os.path.dirname(os.path.realpath(__file__)) + "/imagemounter/imount.py -u")
     volumeInfo = mounting.mountImage(inputFile=argv.inputFile, mountDir=argv.mountDir).getVolumeDirectory()
     # TODO:Fuck images!!!!!!
     logger.critical("Now let's do this!")
-    bar = tqdm(total=1 + len(volumeInfo) * 12)  # TODO: Modify this!!!
-    count += 1
-    logger.info("Step %d.Hashing files." % count)
-    logger.warning(
-        "This step may take much time,you can hash your images later manually.Do you still want to do this?[Y/N]")
-    if input().upper() == 'Y':
-        hashFile.hashFile_MD5_SHA256(argv.inputFile)
+    bar = tqdm(total=1 + len(volumeInfo) * random.randint(1, 100))  # TODO: Modify this!!!
+    # count += 1
+    # logger.info("Step %d.Hashing files." % count)
+    # logger.warning(
+    #     "This step may take much time,you can hash your images later manually.Do you still want to do this?[Y/N]")
+    # if input().upper() == 'Y':
+    #     hashFile.hashFile_MD5_SHA256(argv.inputFile)
     bar.update(1)
     if len(volumeInfo) > 1:
         logger.critical("Image file has multiple volumes.And we should check them one by one.")
@@ -52,6 +56,7 @@ if __name__ == "__main__":
         osVersion = detectOS.detectOperationSystem(volumeInfo=volume,
                                                    mountDir=argv.mountDir)
         bar.update(1)
+
         count += 1
         logger.info("Step %d.Showing Time Zone Info on volume %s." % (count, volume.split(" ")[1]))
         timezoneInfo.timezoneInfo(volumeInfo=volume,
@@ -72,10 +77,10 @@ if __name__ == "__main__":
         logger.info("Step %d.Showing Last Logged User Info on volume %s." % (count, volume.split(" ")[1]))
         lastLogon.lastLogon(mountDir=argv.mountDir, volumeInfo=volume).getLastLoggedInfo()
         bar.update(1)
-        count += 1
-        logger.info("Step %d.Showing Last System Start Time on volume %s." % (count, volume.split(" ")[1]))
-        startTime.startTime(mountDir=argv.mountDir, volumeInfo=volume, osVersion=osVersion).getSystemStartTime()
-        bar.update(1)
+        # count += 1
+        # logger.info("Step %d.Showing Last System Start Time on volume %s." % (count, volume.split(" ")[1]))
+        # startTime.startTime(mountDir=argv.mountDir, volumeInfo=volume, osVersion=osVersion).getSystemStartTime()
+        # bar.update(1)
         count += 1
         logger.info("Step %d.Showing Last System Shutdown Time on volume %s." % (count, volume.split(" ")[1]))
         shutdownTime.shutdownTime(mountDir=argv.mountDir, volumeInfo=volume, bias=bias).getLastShutdownTime()
@@ -95,6 +100,16 @@ if __name__ == "__main__":
                 count, volume.split(" ")[1]))
         installedSoftware.installedSoftware(mountDir=argv.mountDir, volumeInfo=volume).getInstalledSoftwareInfoWin64()
         installedSoftware.installedSoftware(mountDir=argv.mountDir, volumeInfo=volume).getInstalledSoftwareInfoWin32()
+        bar.update(1)
+        count += 1
+        logger.info("Step %d.Showing Windows Prefetch File Information on volume %s." % (count, volume.split(" ")[1]))
+        applicationExecutionLog.applicationExecutionLog(mountDir=argv.mountDir,
+                                                        volumeInfo=volume, bias=bias).getLastExecutionByPrefetch()
+        bar.update(1)
+        count += 1
+        logger.info("Step %d.Showing Windows Shim Cache Information on volume %s." % (count, volume.split(" ")[1]))
+        applicationExecutionLog.applicationExecutionLog(mountDir=argv.mountDir,
+                                                        volumeInfo=volume, bias=bias).parse_shimCacheParser_Output()
         bar.update(1)
         # os.chdir(os.path.dirname(os.path.realpath(__file__)))
         # os.system("lsof|grep %s"%argv.mountDir)

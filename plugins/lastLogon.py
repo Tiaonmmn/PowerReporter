@@ -1,3 +1,4 @@
+__author__ = "Tiaonmmn.ZMZ"
 import os
 from struct import *
 from . import samParse
