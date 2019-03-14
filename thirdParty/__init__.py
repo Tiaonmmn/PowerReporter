@@ -1,2 +1,2 @@
 __author__ = "Tiaonmmn.ZMZ"
-__all__ = ['prefetch']
+__all__ = ['prefetch', 'shimCacheParser', 'userAssist']

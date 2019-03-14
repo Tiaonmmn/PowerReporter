@@ -6,6 +6,8 @@ import subprocess
 import glob
 from thirdParty import prefetch
 import datetime
+import codecs
+from thirdParty import userAssist
 
 
 class applicationExecutionLog:
@@ -126,7 +128,6 @@ class applicationExecutionLog:
             else:
                 logger.warning("Couldn't find SYSTEM registry file!")
                 return None
-            print(parser_output)
             for lines in parser_output.splitlines():
                 logger.warning(lines)
                 if "Last Modified Last Update Path File Size Exec Flag" in lines:
@@ -140,4 +141,47 @@ class applicationExecutionLog:
                 result[executableName] = runTime.strftime("%Y %m %d - %H:%M:%S")
         logger.error(result)
         return result
-    
+
+    def getUserAssistInfo(self):
+        output = self.volumeInfo
+        try:
+            bias = datetime.timedelta(hours=-self.bias)
+        except TypeError:
+            pass
+        result = dict()
+        try:
+            bias = datetime.timedelta(hours=-self.bias)
+        except TypeError:
+            pass
+        if "FAT" or "NTFS" in output.split(" ")[0]:
+            os.chdir("%s/%s/" % (self.mountDir, output.split(" ")[2]))
+            logger.info("Loading every user info!")  # TODO:It should be per user!
+            try:
+                os.chdir("Users/")
+            except FileNotFoundError:
+                logger.error("Couldn't find Users folder!")
+                return None
+            for userDir in os.listdir("."):
+                if os.access("{0}/NTUSER.DAT".format(userDir), os.F_OK | os.R_OK):
+                    registry = Registry.Registry("{0}/NTUSER.DAT".format(userDir))
+                elif os.access("{0}/ntuser.dat".format(userDir), os.F_OK | os.R_OK):
+                    registry = Registry.Registry("{0}/ntuser.dat".format(userDir))
+                else:
+                    logger.warning("Couldn't find user registry on %s" % userDir)
+                    continue
+                try:
+                    open1 = registry.open("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\UserAssist")
+                except Registry.RegistryKeyNotFoundException:
+                    logger.error("Couldn't find UserAssist registry on user {0}".format(userDir))
+                    continue
+                for subkey in open1.subkeys():
+                    count = subkey.subkey("Count")
+                    for items in count.values():
+                        logger.error(codecs.encode(items.name(), 'rot13'))
+                        result[codecs.decode(items.name(), 'rot13') + " ----- %s" % userDir] = \
+                            (datetime.datetime.strptime(userAssist.UserAssist(items.value()).as_dict()[
+                                                            'last_execution'], "%Y %m %d - %H:%M:%S") + bias).strftime(
+                                "%Y %m %d - %H:%M:%S")
+
+        logger.error(result)
+        return result

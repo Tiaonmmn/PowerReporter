@@ -77,40 +77,51 @@ if __name__ == "__main__":
         logger.info("Step %d.Showing Last Logged User Info on volume %s." % (count, volume.split(" ")[1]))
         lastLogon.lastLogon(mountDir=argv.mountDir, volumeInfo=volume).getLastLoggedInfo()
         bar.update(1)
+        count += 1
+        logger.info("Step %d.Showing Last System Start Time on volume %s." % (count, volume.split(" ")[1]))
+        startTime.startTime(mountDir=argv.mountDir, volumeInfo=volume, osVersion=osVersion,
+                            bias=bias).getLastSystemStartTime()
+        bar.update(1)
+        count += 1
+        logger.info("Step %d.Showing Last System Start Time on volume %s." % (count, volume.split(" ")[1]))
+        startTime.startTime(mountDir=argv.mountDir, volumeInfo=volume, osVersion=osVersion,
+                            bias=bias).getSystemStartTimeLog()
+        bar.update(1)
         # count += 1
-        # logger.info("Step %d.Showing Last System Start Time on volume %s." % (count, volume.split(" ")[1]))
-        # startTime.startTime(mountDir=argv.mountDir, volumeInfo=volume, osVersion=osVersion).getSystemStartTime()
+        # logger.info("Step %d.Showing Last System Shutdown Time on volume %s." % (count, volume.split(" ")[1]))
+        # shutdownTime.shutdownTime(mountDir=argv.mountDir, volumeInfo=volume, bias=bias).getLastShutdownTime()
         # bar.update(1)
-        count += 1
-        logger.info("Step %d.Showing Last System Shutdown Time on volume %s." % (count, volume.split(" ")[1]))
-        shutdownTime.shutdownTime(mountDir=argv.mountDir, volumeInfo=volume, bias=bias).getLastShutdownTime()
-        bar.update(1)
-        count += 1
-        logger.info("Step %d.Showing Network Device Information on volume %s." % (count, volume.split(" ")[1]))
-        networkDevice.networkDevice(mountDir=argv.mountDir, volumeInfo=volume).getNetworkDeviceInfo()
-        bar.update(1)
-        count += 1
-        logger.info(
-            "Step %d.Showing Operating System Installed Date Information on volume %s." % (count, volume.split(" ")[1]))
-        osInstalledTime.osInstalledTime(mountDir=argv.mountDir, volumeInfo=volume, bias=bias).getOSInstalledTime()
-        bar.update(1)
-        count += 1
-        logger.info(
-            "Step %d.Showing Operating System Installed Applications Information on volume %s." % (
-                count, volume.split(" ")[1]))
-        installedSoftware.installedSoftware(mountDir=argv.mountDir, volumeInfo=volume).getInstalledSoftwareInfoWin64()
-        installedSoftware.installedSoftware(mountDir=argv.mountDir, volumeInfo=volume).getInstalledSoftwareInfoWin32()
-        bar.update(1)
-        count += 1
-        logger.info("Step %d.Showing Windows Prefetch File Information on volume %s." % (count, volume.split(" ")[1]))
-        applicationExecutionLog.applicationExecutionLog(mountDir=argv.mountDir,
-                                                        volumeInfo=volume, bias=bias).getLastExecutionByPrefetch()
-        bar.update(1)
-        count += 1
-        logger.info("Step %d.Showing Windows Shim Cache Information on volume %s." % (count, volume.split(" ")[1]))
-        applicationExecutionLog.applicationExecutionLog(mountDir=argv.mountDir,
-                                                        volumeInfo=volume, bias=bias).parse_shimCacheParser_Output()
-        bar.update(1)
+        # count += 1
+        # logger.info("Step %d.Showing Network Device Information on volume %s." % (count, volume.split(" ")[1]))
+        # networkDevice.networkDevice(mountDir=argv.mountDir, volumeInfo=volume).getNetworkDeviceInfo()
+        # bar.update(1)
+        # count += 1
+        # logger.info(
+        #     "Step %d.Showing Operating System Installed Date Information on volume %s." % (count, volume.split(" ")[1]))
+        # osInstalledTime.osInstalledTime(mountDir=argv.mountDir, volumeInfo=volume, bias=bias).getOSInstalledTime()
+        # bar.update(1)
+        # count += 1
+        # logger.info(
+        #     "Step %d.Showing Operating System Installed Applications Information on volume %s." % (
+        #         count, volume.split(" ")[1]))
+        # installedSoftware.installedSoftware(mountDir=argv.mountDir, volumeInfo=volume).getInstalledSoftwareInfoWin64()
+        # installedSoftware.installedSoftware(mountDir=argv.mountDir, volumeInfo=volume).getInstalledSoftwareInfoWin32()
+        # bar.update(1)
+        # count += 1
+        # logger.info("Step %d.Showing Windows Prefetch File Information on volume %s." % (count, volume.split(" ")[1]))
+        # applicationExecutionLog.applicationExecutionLog(mountDir=argv.mountDir,
+        #                                                 volumeInfo=volume, bias=bias).getLastExecutionByPrefetch()
+        # bar.update(1)
+        # count += 1
+        # logger.info("Step %d.Showing Windows Shim Cache Information on volume %s." % (count, volume.split(" ")[1]))
+        # applicationExecutionLog.applicationExecutionLog(mountDir=argv.mountDir,
+        #                                                 volumeInfo=volume, bias=bias).parse_shimCacheParser_Output()
+        # bar.update(1)
+        # count += 1
+        # logger.info("Step %d.Showing Windows UserAssist Information on volume %s." % (count, volume.split(" ")[1]))
+        # applicationExecutionLog.applicationExecutionLog(mountDir=argv.mountDir,
+        #                                                 volumeInfo=volume, bias=bias).getUserAssistInfo()
+        # bar.update(1)
         # os.chdir(os.path.dirname(os.path.realpath(__file__)))
         # os.system("lsof|grep %s"%argv.mountDir)
         # mounting.unmountImage(argv.mountDir)
