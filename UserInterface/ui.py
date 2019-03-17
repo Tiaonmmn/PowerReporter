@@ -26,6 +26,7 @@ Options:
     -i          --input             Input image file.
     -m          --mountDir          Image mounting directory.(Default value:/tmp/)
     -o          --output            Output report file.(P.S. In HTML format.)
+    -t          --tempDir           Directory to store temp file.(Default value:/tmp/)
 '''
     VERSION = "2019.2"
 
@@ -37,15 +38,16 @@ Options:
         self.outputFile = None
         self.selfCheck = 0
         self.mountDir = "/tmp"
+        self.tempDir = "/tmp"
         self.checkArgv()
 
     def checkArgv(self):
         if self.argv == []:  # If just call the program with no argv,self.argv will be [],not expect error.
             self.usage()
         try:
-            opts, args = getopt.getopt(self.argv, "-h-v-i:-o:-c-m:",
+            opts, args = getopt.getopt(self.argv, "-h-v-i:-o:-c-m:-t:",
                                        ["help", 'version', "input=", "output=", "check",
-                                        "mountDir="])  # First only help message.
+                                        "mountDir=", "tempDir="])  # First only help message.
         except getopt.GetoptError:
             self.usage()
         for opt, arg in opts:
@@ -86,7 +88,13 @@ Options:
                 else:
                     logger.error("The mountDir %s doesn't have enough permission!Please check it!" % self.mountDir)
                     exit(-3)
-
+            if opt in ("-t", "--tempDir"):
+                self.tempDir = arg
+                if os.access(self.mountDir, os.F_OK | os.R_OK | os.W_OK):
+                    logger.debug("tempDir check OK!")
+                else:
+                    logger.error("The tempDir %s doesn't have enough permission!Please check it!" % self.tempDir)
+                    exit(-3)
         return
 
     def usage(self):

@@ -35,3 +35,4 @@ class Chrome:
                     continue
                 logger.debug("Now listing Google Chrome version using registry!")
                 logger.info("Chrome Version:     " + open1.value("version").value())
+

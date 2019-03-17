@@ -118,12 +118,12 @@ class applicationExecutionLog:
             if os.access("Windows/System32/config/system", os.F_OK | os.R_OK):
                 parser_output = subprocess.getoutput(
                     "python2 {0} {1} {2}".format(
-                        (os.path.dirname(os.path.relpath(__file__)) + "/../thirdParty/shimCacheParser.py"), "-i",
+                        (os.path.dirname(os.path.realpath(__file__)) + "/../thirdParty/shimCacheParser.py"), "-i",
                         "Windows/System32/config/system"))
             elif os.access("Windows/System32/config/SYSTEM", os.F_OK | os.R_OK):
                 parser_output = subprocess.getoutput(
                     "python2 {0} {1} {2}".format(
-                        (os.path.dirname(os.path.relpath(__file__)) + "/../thirdParty/shimCacheParser.py"), "-i",
+                        (os.path.dirname(os.path.realpath(__file__)) + "/../thirdParty/shimCacheParser.py"), "-i",
                         "Windows/System32/config/SYSTEM"))
             else:
                 logger.warning("Couldn't find SYSTEM registry file!")

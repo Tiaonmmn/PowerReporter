@@ -19,6 +19,7 @@ from tqdm import tqdm
 import subprocess
 from UserInterface.ui import Usage
 from plugins import *
+from browser import *
 
 if __name__ == "__main__":
     count = 0
@@ -64,29 +65,29 @@ if __name__ == "__main__":
         bias = timezoneInfo.timezoneInfo(volumeInfo=volume,
                                          mountDir=argv.mountDir).getTimeZoneBias()
         bar.update(1)
-        count += 1
-        logger.info("Step %d.Showing Computer Name Info on volume %s." % (count, volume.split(" ")[1]))
-        computerName.computerName(volumeInfo=volume,
-                                  mountDir=argv.mountDir).showComputerName()
-        bar.update(1)
-        count += 1
-        logger.info("Step %d.Showing User Account Info on volume %s." % (count, volume.split(" ")[1]))
-        samParse.userAccountParse(mountDir=argv.mountDir, volumeInfo=volume)
-        bar.update(1)
-        count += 1
-        logger.info("Step %d.Showing Last Logged User Info on volume %s." % (count, volume.split(" ")[1]))
-        lastLogon.lastLogon(mountDir=argv.mountDir, volumeInfo=volume).getLastLoggedInfo()
-        bar.update(1)
-        count += 1
-        logger.info("Step %d.Showing Last System Start Time on volume %s." % (count, volume.split(" ")[1]))
-        startTime.startTime(mountDir=argv.mountDir, volumeInfo=volume, osVersion=osVersion,
-                            bias=bias).getLastSystemStartTime()
-        bar.update(1)
-        count += 1
-        logger.info("Step %d.Showing Last System Start Time on volume %s." % (count, volume.split(" ")[1]))
-        startTime.startTime(mountDir=argv.mountDir, volumeInfo=volume, osVersion=osVersion,
-                            bias=bias).getSystemStartTimeLog()
-        bar.update(1)
+        # count += 1
+        # logger.info("Step %d.Showing Computer Name Info on volume %s." % (count, volume.split(" ")[1]))
+        # computerName.computerName(volumeInfo=volume,
+        #                           mountDir=argv.mountDir).showComputerName()
+        # bar.update(1)
+        # count += 1
+        # logger.info("Step %d.Showing User Account Info on volume %s." % (count, volume.split(" ")[1]))
+        # samParse.userAccountParse(mountDir=argv.mountDir, volumeInfo=volume)
+        # bar.update(1)
+        # count += 1
+        # logger.info("Step %d.Showing Last Logged User Info on volume %s." % (count, volume.split(" ")[1]))
+        # lastLogon.lastLogon(mountDir=argv.mountDir, volumeInfo=volume).getLastLoggedInfo()
+        # bar.update(1)
+        # count += 1
+        # logger.info("Step %d.Showing Last System Start Time on volume %s." % (count, volume.split(" ")[1]))
+        # start = startTime.startTime(mountDir=argv.mountDir, volumeInfo=volume, osVersion=osVersion,
+        #                             bias=bias)
+        # start.getLastSystemStartTime()
+        # bar.update(1)
+        # count += 1
+        # logger.info("Step %d.Showing Last System Start Time on volume %s." % (count, volume.split(" ")[1]))
+        # start.getSystemStartTimeLog()
+        # bar.update(1)
         # count += 1
         # logger.info("Step %d.Showing Last System Shutdown Time on volume %s." % (count, volume.split(" ")[1]))
         # shutdownTime.shutdownTime(mountDir=argv.mountDir, volumeInfo=volume, bias=bias).getLastShutdownTime()
@@ -122,6 +123,21 @@ if __name__ == "__main__":
         # applicationExecutionLog.applicationExecutionLog(mountDir=argv.mountDir,
         #                                                 volumeInfo=volume, bias=bias).getUserAssistInfo()
         # bar.update(1)
+        count += 1
+        logger.info("Step %d.Showing IE info on volume %s." % (count, volume.split(" ")[1]))
+        InternetExplorer = IE.IE(volumeInfo=volume, mountDir=argv.mountDir, tempDir=argv.tempDir)
+        InternetExplorer.getIEVersion()
+        InternetExplorer.getIEContent()
+        bar.update(1)
+
+
+
+
+
+
+
+
+
         # os.chdir(os.path.dirname(os.path.realpath(__file__)))
         # os.system("lsof|grep %s"%argv.mountDir)
         # mounting.unmountImage(argv.mountDir)
