@@ -10,8 +10,8 @@
           <option name="port" value="22" />
         </fileTransfer>
       </webServer>
-      <webServer id="6f60621f-2951-4090-acd9-d6a448562185" name="192.168.132.159" url="http://192.168.132.159">
-        <fileTransfer host="192.168.132.159" port="22" accessType="SFTP">
+      <webServer id="6f60621f-2951-4090-acd9-d6a448562185" name="192.168.207.128" url="http://192.168.207.128">
+        <fileTransfer host="192.168.207.128" port="22" accessType="SFTP">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
           </advancedOptions>

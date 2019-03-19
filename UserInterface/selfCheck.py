@@ -82,6 +82,14 @@ def selfCheck():
                        reason="Recover lost files from harddisk, digital camera and cdrom").checkCommand()
     samdump2 = Checker(name="samdump2", package="samdump2",
                        reason="retrieves syskey and extract hashes from Windows 2k/NT/XP/Vista SAM.").checkCommand()
+    esedbinfo = Checker(name="esedbinfo", package="libesedb-utils",
+                        reason="determines information about an Extensible Storage Engine(ESE) Database File (EDB)").checkCommand()
+    esedbexport = Checker(name="esedbexport", package="libesedb-utils",
+                          reason="Extract ESE Database.").checkCommand()
+    pasco = Checker(name="pasco", package="pasco",
+                    reason="tool to extract information from MS IE cache files.").checkCommand()
+    msiecfinfo = Checker(name="msiecfinfo", package="libmsiecf-utils",
+                         reason="determines information about a MSIE Cache File (index.dat).").checkCommand()
 
     mount_squashfs = Checker(name="mount.squashfs", package="squashfs-tools",
                              reason="For squashfs volumes").checkPackage()
@@ -97,6 +105,6 @@ def selfCheck():
     # results = [*locals()]
     result = locals()
     for key in result:
-        if result[key] == False:
+        if not result[key]:
             logger.error("Missing %s command or package.Please install it manually!" % (key))
     logger.success("Self Check Done!")

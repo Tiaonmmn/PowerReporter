@@ -1,1 +1,1 @@
-__all__ = ['IE', 'Firefox', 'Chrome']
+__all__ = ['IE', 'Firefox', 'Chrome', 'oldIE']

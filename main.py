@@ -18,6 +18,7 @@ from loguru import logger
 from tqdm import tqdm
 import subprocess
 from UserInterface.ui import Usage
+from UserInterface import selfCheck
 from plugins import *
 from browser import *
 
@@ -123,11 +124,20 @@ if __name__ == "__main__":
         # applicationExecutionLog.applicationExecutionLog(mountDir=argv.mountDir,
         #                                                 volumeInfo=volume, bias=bias).getUserAssistInfo()
         # bar.update(1)
+        # count += 1
+        # logger.info("Step %d.Showing IE info on volume %s." % (count, volume.split(" ")[1]))
+        # InternetExplorer = IE.IE(volumeInfo=volume, mountDir=argv.mountDir, tempDir=argv.tempDir)
+        # InternetExplorer.getIEVersion()
+        # InternetExplorer.getIEContent()
+        # InternetExplorer.getIEHistory()
+        # InternetExplorer.getIECookies()
+        # InternetExplorer.getIEKeyWords()
+        # bar.update(1)
         count += 1
-        logger.info("Step %d.Showing IE info on volume %s." % (count, volume.split(" ")[1]))
-        InternetExplorer = IE.IE(volumeInfo=volume, mountDir=argv.mountDir, tempDir=argv.tempDir)
-        InternetExplorer.getIEVersion()
-        InternetExplorer.getIEContent()
+        logger.info("Step %d.Showing old IE info on volume %s." % (count, volume.split(" ")[1]))
+        oldInternetExplorer = oldIE.IE(volumeInfo=volume, mountDir=argv.mountDir, tempDir=argv.tempDir, osVersion=osVersion)
+        oldInternetExplorer.getTypedURL()
+        oldInternetExplorer.getIEHistory()
         bar.update(1)
 
 
