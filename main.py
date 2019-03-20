@@ -66,6 +66,10 @@ if __name__ == "__main__":
         bias = timezoneInfo.timezoneInfo(volumeInfo=volume,
                                          mountDir=argv.mountDir).getTimeZoneBias()
         bar.update(1)
+        count += 1
+        logger.info("Step %d.Showing User Shell Folder info on volume %s." % (count, volume.split(" ")[1]))
+        customShellFolder.customShellFolder(mountDir=argv.mountDir, volumeInfo=volume).getCustomShellFolder()
+        bar.update(1)
         # count += 1
         # logger.info("Step %d.Showing Computer Name Info on volume %s." % (count, volume.split(" ")[1]))
         # computerName.computerName(volumeInfo=volume,
@@ -133,14 +137,18 @@ if __name__ == "__main__":
         # InternetExplorer.getIECookies()
         # InternetExplorer.getIEKeyWords()
         # bar.update(1)
+        # count += 1
+        # logger.info("Step %d.Showing old IE info on volume %s." % (count, volume.split(" ")[1]))
+        # oldInternetExplorer = oldIE.IE(volumeInfo=volume, mountDir=argv.mountDir, tempDir=argv.tempDir, osVersion=osVersion)
+        # oldInternetExplorer.getTypedURL()
+        # oldInternetExplorer.getIEHistory()
+        # oldInternetExplorer.getIECookies()
+        # oldInternetExplorer.getIEContents()
+        # bar.update(1)
         count += 1
-        logger.info("Step %d.Showing old IE info on volume %s." % (count, volume.split(" ")[1]))
-        oldInternetExplorer = oldIE.IE(volumeInfo=volume, mountDir=argv.mountDir, tempDir=argv.tempDir, osVersion=osVersion)
-        oldInternetExplorer.getTypedURL()
-        oldInternetExplorer.getIEHistory()
+        logger.info("Step %d.Showing IE info on volume %s." % (count, volume.split(" ")[1]))
+        Explorer.Explorer(mountDir=argv.mountDir, volumeInfo=volume, bias=bias).getKeyWordAtSearchbar()
         bar.update(1)
-
-
 
 
 

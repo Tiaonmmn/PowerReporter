@@ -149,10 +149,6 @@ class applicationExecutionLog:
         except TypeError:
             pass
         result = dict()
-        try:
-            bias = datetime.timedelta(hours=-self.bias)
-        except TypeError:
-            pass
         if "FAT" or "NTFS" in output.split(" ")[0]:
             os.chdir("%s/%s/" % (self.mountDir, output.split(" ")[2]))
             logger.info("Loading every user info!")  # TODO:It should be per user!
