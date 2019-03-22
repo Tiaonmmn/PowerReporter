@@ -12,15 +12,16 @@ Now,we have an idea of directly mount the image and search for info,which requir
 '''
 __author__ = "Tiaonmmn.ZMZ"
 import os
-import sys
 import random
+import subprocess
+import sys
+
 from loguru import logger
 from tqdm import tqdm
-import subprocess
-from UserInterface.ui import Usage
+
 from UserInterface import selfCheck
+from UserInterface.ui import Usage
 from plugins import *
-from browser import *
 
 if __name__ == "__main__":
     count = 0
@@ -65,11 +66,11 @@ if __name__ == "__main__":
                                   mountDir=argv.mountDir).getTimeZoneInfo()
         bias = timezoneInfo.timezoneInfo(volumeInfo=volume,
                                          mountDir=argv.mountDir).getTimeZoneBias()
-        bar.update(1)
-        count += 1
-        logger.info("Step %d.Showing User Shell Folder info on volume %s." % (count, volume.split(" ")[1]))
-        customShellFolder.customShellFolder(mountDir=argv.mountDir, volumeInfo=volume).getCustomShellFolder()
-        bar.update(1)
+        # bar.update(1)
+        # count += 1
+        # logger.info("Step %d.Showing User Shell Folder info on volume %s." % (count, volume.split(" ")[1]))
+        # customShellFolder.customShellFolder(mountDir=argv.mountDir, volumeInfo=volume).getCustomShellFolder()
+        # bar.update(1)
         # count += 1
         # logger.info("Step %d.Showing Computer Name Info on volume %s." % (count, volume.split(" ")[1]))
         # computerName.computerName(volumeInfo=volume,
@@ -145,17 +146,17 @@ if __name__ == "__main__":
         # oldInternetExplorer.getIECookies()
         # oldInternetExplorer.getIEContents()
         # bar.update(1)
+        # count += 1
+        # logger.info("Step %d.Showing IE info on volume %s." % (count, volume.split(" ")[1]))
+        # Explorer.Explorer(mountDir=argv.mountDir, volumeInfo=volume, bias=bias).getKeyWordAtSearchbar()
+        # bar.update(1)
+        # count += 1
+        # logger.info("Step %d.Showing Outlook info on volume %s." % (count, volume.split(" ")[1]))
+        # outlook = Outlook.Outlook(mountDir=argv.mountDir, volumeInfo=volume, bias=bias, tempDir=argv.tempDir)
+        # outlook.showMessage()
         count += 1
-        logger.info("Step %d.Showing IE info on volume %s." % (count, volume.split(" ")[1]))
-        Explorer.Explorer(mountDir=argv.mountDir, volumeInfo=volume, bias=bias).getKeyWordAtSearchbar()
-        bar.update(1)
-
-
-
-
-
-
-
+        logger.info("Step %d.Showing USB info on volume %s." % (count, volume.split(" ")[1]))
+        usbInfo.usbInfo(mountDir=argv.mountDir, volumeInfo=volume, bias=bias).getUsbVolumeName()
         # os.chdir(os.path.dirname(os.path.realpath(__file__)))
         # os.system("lsof|grep %s"%argv.mountDir)
         # mounting.unmountImage(argv.mountDir)

@@ -16,11 +16,11 @@ class mounting:
         logger.debug(subprocess.call(["mmls", "-v", "%s" % self.inputFile]))
 
     def realMount(self):
-        logger.debug(subprocess.call(
+        subprocess.call(
             [os.path.dirname(os.path.realpath(__file__)) + "/../" + "./imagemounter/imount.py",
              "--no-interaction",
              "-v", "-v", "-v", "--mountdir", "%s" % self.mountDir,
-             "%s" % self.inputFile]))
+             "%s" % self.inputFile])
         # logger.debug(subprocess.call(
         #     "./imagemounter/imount.py --no-interaction -v -v -v --mountdir %s %s " % (self.mountDir, self.inputFile)))
 

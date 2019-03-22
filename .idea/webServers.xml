@@ -2,16 +2,8 @@
 <project version="4">
   <component name="WebServers">
     <option name="servers">
-      <webServer id="5ebccf5a-5086-4810-b2fb-0733cf2da79f" name="172.16.29.135" url="http://172.16.29.135">
-        <fileTransfer host="172.16.29.135" port="22" rootFolder="/home/tiaonmmn/Desktop" accessType="SFTP">
-          <advancedOptions>
-            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
-          </advancedOptions>
-          <option name="port" value="22" />
-        </fileTransfer>
-      </webServer>
-      <webServer id="6f60621f-2951-4090-acd9-d6a448562185" name="192.168.207.128" url="http://192.168.207.128">
-        <fileTransfer host="192.168.207.128" port="22" accessType="SFTP">
+      <webServer id="6f60621f-2951-4090-acd9-d6a448562185" name="192.168.207.136" url="http://192.168.207.136">
+        <fileTransfer host="192.168.207.136" port="22" accessType="SFTP">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
           </advancedOptions>
