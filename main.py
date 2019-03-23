@@ -22,6 +22,7 @@ from tqdm import tqdm
 from UserInterface import selfCheck
 from UserInterface.ui import Usage
 from plugins import *
+from browser import *
 
 if __name__ == "__main__":
     count = 0
@@ -118,11 +119,11 @@ if __name__ == "__main__":
         # logger.info("Step %d.Showing Windows Prefetch File Information on volume %s." % (count, volume.split(" ")[1]))
         # applicationExecutionLog.applicationExecutionLog(mountDir=argv.mountDir,
         #                                                 volumeInfo=volume, bias=bias).getLastExecutionByPrefetch()
-        # bar.update(1)
-        # count += 1
-        # logger.info("Step %d.Showing Windows Shim Cache Information on volume %s." % (count, volume.split(" ")[1]))
-        # applicationExecutionLog.applicationExecutionLog(mountDir=argv.mountDir,
-        #                                                 volumeInfo=volume, bias=bias).parse_shimCacheParser_Output()
+        bar.update(1)
+        count += 1
+        logger.info("Step %d.Showing Windows Shim Cache Information on volume %s." % (count, volume.split(" ")[1]))
+        applicationExecutionLog.applicationExecutionLog(mountDir=argv.mountDir,
+                                                        volumeInfo=volume, bias=bias).parse_shimCacheParser_Output()
         # bar.update(1)
         # count += 1
         # logger.info("Step %d.Showing Windows UserAssist Information on volume %s." % (count, volume.split(" ")[1]))
@@ -154,9 +155,18 @@ if __name__ == "__main__":
         # logger.info("Step %d.Showing Outlook info on volume %s." % (count, volume.split(" ")[1]))
         # outlook = Outlook.Outlook(mountDir=argv.mountDir, volumeInfo=volume, bias=bias, tempDir=argv.tempDir)
         # outlook.showMessage()
+        # bar.update(1)
+        # count += 1
+        # logger.info("Step %d.Showing USB info on volume %s." % (count, volume.split(" ")[1]))
+        # usbInfo.usbInfo(mountDir=argv.mountDir, volumeInfo=volume, bias=bias).getUsbVolumeName()
+        # bar.update(1)
         count += 1
-        logger.info("Step %d.Showing USB info on volume %s." % (count, volume.split(" ")[1]))
-        usbInfo.usbInfo(mountDir=argv.mountDir, volumeInfo=volume, bias=bias).getUsbVolumeName()
+        logger.info("Step %d.Showing Shellbag info on volume %s." % (count, volume.split(" ")[1]))
+        explorer = Explorer.Explorer(mountDir=argv.mountDir, volumeInfo=volume, bias=bias)
+        explorer.getShellBag()
+        explorer.getMapNetworkDriveMRU()
+        explorer.getRunMRU()
+        bar.update(1)
         # os.chdir(os.path.dirname(os.path.realpath(__file__)))
         # os.system("lsof|grep %s"%argv.mountDir)
         # mounting.unmountImage(argv.mountDir)

@@ -128,6 +128,7 @@ class applicationExecutionLog:
             else:
                 logger.warning("Couldn't find SYSTEM registry file!")
                 return None
+            logger.error(parser_output)
             for lines in parser_output.splitlines():
                 logger.warning(lines)
                 if "Last Modified Last Update Path File Size Exec Flag" in lines:
