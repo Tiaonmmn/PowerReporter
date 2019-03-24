@@ -119,11 +119,11 @@ if __name__ == "__main__":
         # logger.info("Step %d.Showing Windows Prefetch File Information on volume %s." % (count, volume.split(" ")[1]))
         # applicationExecutionLog.applicationExecutionLog(mountDir=argv.mountDir,
         #                                                 volumeInfo=volume, bias=bias).getLastExecutionByPrefetch()
-        bar.update(1)
-        count += 1
-        logger.info("Step %d.Showing Windows Shim Cache Information on volume %s." % (count, volume.split(" ")[1]))
-        applicationExecutionLog.applicationExecutionLog(mountDir=argv.mountDir,
-                                                        volumeInfo=volume, bias=bias).parse_shimCacheParser_Output()
+        # bar.update(1)
+        # count += 1
+        # logger.info("Step %d.Showing Windows Shim Cache Information on volume %s." % (count, volume.split(" ")[1]))
+        # applicationExecutionLog.applicationExecutionLog(mountDir=argv.mountDir,
+        #                                                 volumeInfo=volume, bias=bias).parse_shimCacheParser_Output()
         # bar.update(1)
         # count += 1
         # logger.info("Step %d.Showing Windows UserAssist Information on volume %s." % (count, volume.split(" ")[1]))
