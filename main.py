@@ -16,9 +16,6 @@ import random
 import subprocess
 import sys
 
-from loguru import logger
-from tqdm import tqdm
-
 from UserInterface import selfCheck
 from UserInterface.ui import Usage
 from plugins import *
@@ -33,6 +30,9 @@ if __name__ == "__main__":
     if argv.selfCheck == 1:
         selfCheck.selfCheck()
         exit(0)
+    from loguru import logger
+    from tqdm import tqdm
+
     umountOutput = subprocess.getoutput(os.path.dirname(os.path.realpath(__file__)) + "/imagemounter/imount.py -u")
     if "[+] Nothing to do" in umountOutput:
         pass
@@ -67,7 +67,7 @@ if __name__ == "__main__":
                                   mountDir=argv.mountDir).getTimeZoneInfo()
         bias = timezoneInfo.timezoneInfo(volumeInfo=volume,
                                          mountDir=argv.mountDir).getTimeZoneBias()
-        # bar.update(1)
+        bar.update(1)
         # count += 1
         # logger.info("Step %d.Showing User Shell Folder info on volume %s." % (count, volume.split(" ")[1]))
         # customShellFolder.customShellFolder(mountDir=argv.mountDir, volumeInfo=volume).getCustomShellFolder()
@@ -94,6 +94,10 @@ if __name__ == "__main__":
         # count += 1
         # logger.info("Step %d.Showing Last System Start Time on volume %s." % (count, volume.split(" ")[1]))
         # start.getSystemStartTimeLog()
+        # bar.update(1)
+        # count += 1
+        # logger.info("Step %d.Showing Last System Start Time on volume %s." % (count, volume.split(" ")[1]))
+        # printers.printers(mountDir=argv.mountDir,volumeInfo=volume).showPrintersInfo()
         # bar.update(1)
         # count += 1
         # logger.info("Step %d.Showing Last System Shutdown Time on volume %s." % (count, volume.split(" ")[1]))
@@ -153,8 +157,8 @@ if __name__ == "__main__":
         # bar.update(1)
         # count += 1
         # logger.info("Step %d.Showing Outlook info on volume %s." % (count, volume.split(" ")[1]))
-        # outlook = Outlook.Outlook(mountDir=argv.mountDir, volumeInfo=volume, bias=bias, tempDir=argv.tempDir)
-        # outlook.showMessage()
+        # outlook = Office.Office(mountDir=argv.mountDir, volumeInfo=volume, bias=bias, tempDir=argv.tempDir)
+        # outlook.getOfficeFileMRU()
         # bar.update(1)
         # count += 1
         # logger.info("Step %d.Showing USB info on volume %s." % (count, volume.split(" ")[1]))
@@ -162,10 +166,13 @@ if __name__ == "__main__":
         # bar.update(1)
         count += 1
         logger.info("Step %d.Showing Shellbag info on volume %s." % (count, volume.split(" ")[1]))
-        explorer = Explorer.Explorer(mountDir=argv.mountDir, volumeInfo=volume, bias=bias)
-        explorer.getShellBag()
-        explorer.getMapNetworkDriveMRU()
-        explorer.getRunMRU()
+        explorer = Explorer.Explorer(mountDir=argv.mountDir, volumeInfo=volume, bias=bias, outputDir=argv.outputDir)
+        # explorer.getShellBag()
+        # explorer.getMapNetworkDriveMRU()
+        # explorer.getRunMRU()
+        # explorer.getJumpList()
+        # explorer.showDesktopFiles()
+        explorer.extractThumbCacheFiles()
         bar.update(1)
         # os.chdir(os.path.dirname(os.path.realpath(__file__)))
         # os.system("lsof|grep %s"%argv.mountDir)

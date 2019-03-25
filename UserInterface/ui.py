@@ -25,7 +25,7 @@ Options:
     -c          --check             Check local system for necessary tools.
     -i          --input             Input image file.
     -m          --mountDir          Image mounting directory.(Default value:/tmp/)
-    -o          --output            Output report file.(P.S. In HTML format.)
+    -o          --output            Output report related directory.(P.S. In unknown format.)
     -t          --tempDir           Directory to store temp file.(Default value:/tmp/)
 '''
     VERSION = "2019.2"
@@ -35,7 +35,7 @@ Options:
         self.debug = False
         self.verbose = 0
         self.inputFile = None
-        self.outputFile = None
+        self.outputDir = "/tmp"
         self.selfCheck = 0
         self.mountDir = "/tmp"
         self.tempDir = "/tmp"
@@ -69,16 +69,12 @@ Options:
                     logger.error("Couldn't find file %s! Please check your file!" % self.inputFile)
                     exit(-1)
             if opt in ("-o", "--output"):
-                self.outputFile = arg
-                if not os.path.isfile(self.outputFile):
+                self.outputDir = arg
+                if os.access(self.outputDir, os.R_OK | os.R_OK | os.W_OK):
                     pass
                 else:
-                    if input(
-                            "Output file %s already exists,Are you sure to overwrite?[Y/N]" % self.outputFile) == "Y":
-                        pass
-                    else:
-                        logger.error("Check your output file!")
-                        exit(-2)
+                    logger.error("Check your output directory!")
+                    exit(-2)
             if opt in ("-c", "--check"):
                 self.selfCheck = 1
             if opt in ("-m", "--mountDir"):

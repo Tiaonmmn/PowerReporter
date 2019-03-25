@@ -30,7 +30,8 @@ from Registry import Registry
 from BinaryParser import OverrunBufferException
 from ShellItems import SHITEMLIST
 
-g_logger = logging.getLogger("shellbags")
+
+# g_logger = logging.getLogger("shellbags")
 
 
 def date_safe(d):
@@ -134,14 +135,14 @@ def get_shellbags(shell_key):
                             })
                         offset += size
         except Registry.RegistryValueNotFoundException:
-            g_logger.warning("Registry.RegistryValueNotFoundException")
+            # g_logger.warning("Registry.RegistryValueNotFoundException")
             pass
         except Registry.RegistryKeyNotFoundException:
-            g_logger.warning("Registry.RegistryKeyNotFoundException")
+            # g_logger.warning("Registry.RegistryKeyNotFoundException")
             pass
         except:
-            g_logger.warning("Unexpected error %s" % sys.exc_info()[0])
-
+            # g_logger.warning("Unexpected error %s" % sys.exc_info()[0])
+            pass
         # Next, recurse into each BagMRU key
         for value in [value for value in key.values()
                       if re.match("\d+", value.name())]:
@@ -203,16 +204,16 @@ def get_all_shellbags(reg):
         except Registry.RegistryKeyNotFoundException:
             pass
         except Exception:
-            g_logger.exception("Unhandled exception while parsing %s" % path)
-
+            # g_logger.exception("Unhandled exception while parsing %s" % path)
+            pass
     return shellbags
 
 
 def print_shellbag_csv(shellbags, regfile):
     stdoutWriter = csv.writer(sys.stdout)
-    stdoutWriter.writerow(["Key Last Write Time", "Hive",
-                           "Modification Date", "Accessed Date",
-                           "Creation Date", "Path", "Key"])
+    # stdoutWriter.writerow(["Key Last Write Time", "Hive",
+    #                        "Modification Date", "Accessed Date",
+    #                        "Creation Date", "Path", "Key"])
     for shellbag in shellbags:
         modified = date_safe_str(shellbag["mtime"])
         accessed = date_safe_str(shellbag["atime"])

@@ -95,6 +95,8 @@ def selfCheck():
                              reason="For squashfs volumes").checkPackage()
     mount_xfs = Checker(name="mount.xfs", package="xfsprogs", reason="For XFS volumes").checkPackage()
     mount_jffs2 = Checker(name="mount.jffs2", package="mtd-utils", reason="For JFFS2 volumes").checkPackage()
+    wine = Checker(name="wine", package="wine-stable", reason="For thumbcache viewer").checkPackage()
+    os.system("wine")
 
     progressbar = Checker(name="progressbar", package="progressbar", reason="progress bar").checkModule()
     tqdm = Checker(name="tqdm", package="tqdm", reason="progress bar").checkModule()
