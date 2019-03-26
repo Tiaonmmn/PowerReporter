@@ -104,6 +104,7 @@ def selfCheck():
                        reason="Python parser of Windows registry").checkModule()
     termcolor = Checker(name="termcolor", package="termcolor", reason="terminal color").checkModule()
     evtx = Checker(name="python-Evtx", package="Evtx", reason="Parser for Windows new version event logs").checkModule()
+
     # results = [*locals()]
     result = locals()
     for key in result:

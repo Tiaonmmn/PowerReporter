@@ -1,12 +1,14 @@
 __author__ = "Tiaonmmn.ZMZ"
+import codecs
+import datetime
+import glob
 import os
+import subprocess
+
 from Registry import Registry
 from loguru import logger
-import subprocess
-import glob
+
 from thirdParty import prefetch
-import datetime
-import codecs
 from thirdParty import userAssist
 
 
@@ -174,8 +176,11 @@ class applicationExecutionLog:
                 for subkey in open1.subkeys():
                     count = subkey.subkey("Count")
                     for items in count.values():
-                        logger.error(codecs.encode(items.name(), 'rot13'))
-                        result[codecs.decode(items.name(), 'rot13') + " ----- %s" % userDir] = \
+                        try:
+                            name = items.name()
+                        except UnicodeDecodeError:
+                            continue
+                        result[codecs.encode(name, 'rot13') + " ----- %s" % userDir + " ----- %s" % userDir] = \
                             (datetime.datetime.strptime(userAssist.UserAssist(items.value()).as_dict()[
                                                             'last_execution'], "%Y %m %d - %H:%M:%S") + bias).strftime(
                                 "%Y %m %d - %H:%M:%S")

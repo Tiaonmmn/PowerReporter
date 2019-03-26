@@ -130,7 +130,10 @@ class usbInfo:
             else:
                 logger.critical("Couldn't find setupapi.dev.log")
                 return None
-            setupapi = open('Windows/inf/setupapi.dev.log', 'r').readlines()
+            try:
+                setupapi = open('Windows/inf/setupapi.dev.log', 'r').readlines()
+            except UnicodeDecodeError:
+                setupapi = open('Windows/inf/setupapi.dev.log', 'r', encoding='gbk').readlines()
             for item in self._lastInserted:
                 for a in range(len(setupapi)):
                     if item['DeviceName'].split("#")[4] in setupapi[a] and item['DeviceName'].split("#")[5] in setupapi[a]:

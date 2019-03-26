@@ -42,12 +42,12 @@ if __name__ == "__main__":
     # TODO:Fuck images!!!!!!
     logger.critical("Now let's do this!")
     bar = tqdm(total=1 + len(volumeInfo) * random.randint(1, 100))  # TODO: Modify this!!!
-    # count += 1
-    # logger.info("Step %d.Hashing files." % count)
-    # logger.warning(
-    #     "This step may take much time,you can hash your images later manually.Do you still want to do this?[Y/N]")
-    # if input().upper() == 'Y':
-    #     hashFile.hashFile_MD5_SHA256(argv.inputFile)
+    count += 1
+    logger.info("Step %d.Hashing files." % count)
+    logger.warning(
+        "This step may take much time,you can hash your images later manually.Do you still want to do this?[Y/N]")
+    if input().upper() == 'Y':
+        hashFile.hashFile_MD5_SHA256(argv.inputFile)
     bar.update(1)
     if len(volumeInfo) > 1:
         logger.critical("Image file has multiple volumes.And we should check them one by one.")
@@ -68,112 +68,112 @@ if __name__ == "__main__":
         bias = timezoneInfo.timezoneInfo(volumeInfo=volume,
                                          mountDir=argv.mountDir).getTimeZoneBias()
         bar.update(1)
-        # count += 1
-        # logger.info("Step %d.Showing User Shell Folder info on volume %s." % (count, volume.split(" ")[1]))
-        # customShellFolder.customShellFolder(mountDir=argv.mountDir, volumeInfo=volume).getCustomShellFolder()
-        # bar.update(1)
-        # count += 1
-        # logger.info("Step %d.Showing Computer Name Info on volume %s." % (count, volume.split(" ")[1]))
-        # computerName.computerName(volumeInfo=volume,
-        #                           mountDir=argv.mountDir).showComputerName()
-        # bar.update(1)
-        # count += 1
-        # logger.info("Step %d.Showing User Account Info on volume %s." % (count, volume.split(" ")[1]))
-        # samParse.userAccountParse(mountDir=argv.mountDir, volumeInfo=volume)
-        # bar.update(1)
-        # count += 1
-        # logger.info("Step %d.Showing Last Logged User Info on volume %s." % (count, volume.split(" ")[1]))
-        # lastLogon.lastLogon(mountDir=argv.mountDir, volumeInfo=volume).getLastLoggedInfo()
-        # bar.update(1)
-        # count += 1
-        # logger.info("Step %d.Showing Last System Start Time on volume %s." % (count, volume.split(" ")[1]))
-        # start = startTime.startTime(mountDir=argv.mountDir, volumeInfo=volume, osVersion=osVersion,
-        #                             bias=bias)
-        # start.getLastSystemStartTime()
-        # bar.update(1)
-        # count += 1
-        # logger.info("Step %d.Showing Last System Start Time on volume %s." % (count, volume.split(" ")[1]))
-        # start.getSystemStartTimeLog()
-        # bar.update(1)
-        # count += 1
-        # logger.info("Step %d.Showing Last System Start Time on volume %s." % (count, volume.split(" ")[1]))
-        # printers.printers(mountDir=argv.mountDir,volumeInfo=volume).showPrintersInfo()
-        # bar.update(1)
-        # count += 1
-        # logger.info("Step %d.Showing Last System Shutdown Time on volume %s." % (count, volume.split(" ")[1]))
-        # shutdownTime.shutdownTime(mountDir=argv.mountDir, volumeInfo=volume, bias=bias).getLastShutdownTime()
-        # bar.update(1)
-        # count += 1
-        # logger.info("Step %d.Showing Network Device Information on volume %s." % (count, volume.split(" ")[1]))
-        # networkDevice.networkDevice(mountDir=argv.mountDir, volumeInfo=volume).getNetworkDeviceInfo()
-        # bar.update(1)
-        # count += 1
-        # logger.info(
-        #     "Step %d.Showing Operating System Installed Date Information on volume %s." % (count, volume.split(" ")[1]))
-        # osInstalledTime.osInstalledTime(mountDir=argv.mountDir, volumeInfo=volume, bias=bias).getOSInstalledTime()
-        # bar.update(1)
-        # count += 1
-        # logger.info(
-        #     "Step %d.Showing Operating System Installed Applications Information on volume %s." % (
-        #         count, volume.split(" ")[1]))
-        # installedSoftware.installedSoftware(mountDir=argv.mountDir, volumeInfo=volume).getInstalledSoftwareInfoWin64()
-        # installedSoftware.installedSoftware(mountDir=argv.mountDir, volumeInfo=volume).getInstalledSoftwareInfoWin32()
-        # bar.update(1)
-        # count += 1
-        # logger.info("Step %d.Showing Windows Prefetch File Information on volume %s." % (count, volume.split(" ")[1]))
-        # applicationExecutionLog.applicationExecutionLog(mountDir=argv.mountDir,
-        #                                                 volumeInfo=volume, bias=bias).getLastExecutionByPrefetch()
-        # bar.update(1)
-        # count += 1
-        # logger.info("Step %d.Showing Windows Shim Cache Information on volume %s." % (count, volume.split(" ")[1]))
-        # applicationExecutionLog.applicationExecutionLog(mountDir=argv.mountDir,
-        #                                                 volumeInfo=volume, bias=bias).parse_shimCacheParser_Output()
-        # bar.update(1)
-        # count += 1
-        # logger.info("Step %d.Showing Windows UserAssist Information on volume %s." % (count, volume.split(" ")[1]))
-        # applicationExecutionLog.applicationExecutionLog(mountDir=argv.mountDir,
-        #                                                 volumeInfo=volume, bias=bias).getUserAssistInfo()
-        # bar.update(1)
-        # count += 1
-        # logger.info("Step %d.Showing IE info on volume %s." % (count, volume.split(" ")[1]))
-        # InternetExplorer = IE.IE(volumeInfo=volume, mountDir=argv.mountDir, tempDir=argv.tempDir)
-        # InternetExplorer.getIEVersion()
-        # InternetExplorer.getIEContent()
-        # InternetExplorer.getIEHistory()
-        # InternetExplorer.getIECookies()
-        # InternetExplorer.getIEKeyWords()
-        # bar.update(1)
-        # count += 1
-        # logger.info("Step %d.Showing old IE info on volume %s." % (count, volume.split(" ")[1]))
-        # oldInternetExplorer = oldIE.IE(volumeInfo=volume, mountDir=argv.mountDir, tempDir=argv.tempDir, osVersion=osVersion)
-        # oldInternetExplorer.getTypedURL()
-        # oldInternetExplorer.getIEHistory()
-        # oldInternetExplorer.getIECookies()
-        # oldInternetExplorer.getIEContents()
-        # bar.update(1)
-        # count += 1
-        # logger.info("Step %d.Showing IE info on volume %s." % (count, volume.split(" ")[1]))
-        # Explorer.Explorer(mountDir=argv.mountDir, volumeInfo=volume, bias=bias).getKeyWordAtSearchbar()
-        # bar.update(1)
-        # count += 1
-        # logger.info("Step %d.Showing Outlook info on volume %s." % (count, volume.split(" ")[1]))
-        # outlook = Office.Office(mountDir=argv.mountDir, volumeInfo=volume, bias=bias, tempDir=argv.tempDir)
-        # outlook.getOfficeFileMRU()
-        # bar.update(1)
-        # count += 1
-        # logger.info("Step %d.Showing USB info on volume %s." % (count, volume.split(" ")[1]))
-        # usbInfo.usbInfo(mountDir=argv.mountDir, volumeInfo=volume, bias=bias).getUsbVolumeName()
-        # bar.update(1)
-        # count += 1
-        # logger.info("Step %d.Showing Shellbag info on volume %s." % (count, volume.split(" ")[1]))
-        # explorer = Explorer.Explorer(mountDir=argv.mountDir, volumeInfo=volume, bias=bias, outputDir=argv.outputDir)
-        # # explorer.getShellBag()
-        # # explorer.getMapNetworkDriveMRU()
-        # # explorer.getRunMRU()
-        # # explorer.getJumpList()
-        # # explorer.showDesktopFiles()
-        # explorer.extractThumbCacheFiles()
-        # bar.update(1)
+        count += 1
+        logger.info("Step %d.Showing User Shell Folder info on volume %s." % (count, volume.split(" ")[1]))
+        customShellFolder.customShellFolder(mountDir=argv.mountDir, volumeInfo=volume).getCustomShellFolder()
+        bar.update(1)
+        count += 1
+        logger.info("Step %d.Showing Computer Name Info on volume %s." % (count, volume.split(" ")[1]))
+        computerName.computerName(volumeInfo=volume,
+                                  mountDir=argv.mountDir).showComputerName()
+        bar.update(1)
+        count += 1
+        logger.info("Step %d.Showing User Account Info on volume %s." % (count, volume.split(" ")[1]))
+        samParse.userAccountParse(mountDir=argv.mountDir, volumeInfo=volume)
+        bar.update(1)
+        count += 1
+        logger.info("Step %d.Showing Last Logged User Info on volume %s." % (count, volume.split(" ")[1]))
+        lastLogon.lastLogon(mountDir=argv.mountDir, volumeInfo=volume).getLastLoggedInfo()
+        bar.update(1)
+        count += 1
+        logger.info("Step %d.Showing Last System Start Time on volume %s." % (count, volume.split(" ")[1]))
+        start = startTime.startTime(mountDir=argv.mountDir, volumeInfo=volume, osVersion=osVersion,
+                                    bias=bias)
+        start.getLastSystemStartTime()
+        bar.update(1)
+        count += 1
+        logger.info("Step %d.Showing Last System Start Time on volume %s." % (count, volume.split(" ")[1]))
+        start.getSystemStartTimeLog()
+        bar.update(1)
+        count += 1
+        logger.info("Step %d.Showing Last System Start Time on volume %s." % (count, volume.split(" ")[1]))
+        printers.printers(mountDir=argv.mountDir, volumeInfo=volume).showPrintersInfo()
+        bar.update(1)
+        count += 1
+        logger.info("Step %d.Showing Last System Shutdown Time on volume %s." % (count, volume.split(" ")[1]))
+        shutdownTime.shutdownTime(mountDir=argv.mountDir, volumeInfo=volume, bias=bias).getLastShutdownTime()
+        bar.update(1)
+        count += 1
+        logger.info("Step %d.Showing Network Device Information on volume %s." % (count, volume.split(" ")[1]))
+        networkDevice.networkDevice(mountDir=argv.mountDir, volumeInfo=volume).getNetworkDeviceInfo()
+        bar.update(1)
+        count += 1
+        logger.info(
+            "Step %d.Showing Operating System Installed Date Information on volume %s." % (count, volume.split(" ")[1]))
+        osInstalledTime.osInstalledTime(mountDir=argv.mountDir, volumeInfo=volume, bias=bias).getOSInstalledTime()
+        bar.update(1)
+        count += 1
+        logger.info(
+            "Step %d.Showing Operating System Installed Applications Information on volume %s." % (
+                count, volume.split(" ")[1]))
+        installedSoftware.installedSoftware(mountDir=argv.mountDir, volumeInfo=volume).getInstalledSoftwareInfoWin64()
+        installedSoftware.installedSoftware(mountDir=argv.mountDir, volumeInfo=volume).getInstalledSoftwareInfoWin32()
+        bar.update(1)
+        count += 1
+        logger.info("Step %d.Showing Windows Prefetch File Information on volume %s." % (count, volume.split(" ")[1]))
+        applicationExecutionLog.applicationExecutionLog(mountDir=argv.mountDir,
+                                                        volumeInfo=volume, bias=bias).getLastExecutionByPrefetch()
+        bar.update(1)
+        count += 1
+        logger.info("Step %d.Showing Windows Shim Cache Information on volume %s." % (count, volume.split(" ")[1]))
+        applicationExecutionLog.applicationExecutionLog(mountDir=argv.mountDir,
+                                                        volumeInfo=volume, bias=bias).parse_shimCacheParser_Output()
+        bar.update(1)
+        count += 1
+        logger.info("Step %d.Showing Windows UserAssist Information on volume %s." % (count, volume.split(" ")[1]))
+        applicationExecutionLog.applicationExecutionLog(mountDir=argv.mountDir,
+                                                        volumeInfo=volume, bias=bias).getUserAssistInfo()
+        bar.update(1)
+        count += 1
+        logger.info("Step %d.Showing IE info on volume %s." % (count, volume.split(" ")[1]))
+        InternetExplorer = IE.IE(volumeInfo=volume, mountDir=argv.mountDir, tempDir=argv.tempDir)
+        InternetExplorer.getIEVersion()
+        InternetExplorer.getIEContent()
+        InternetExplorer.getIEHistory()
+        InternetExplorer.getIECookies()
+        InternetExplorer.getIEKeyWords()
+        bar.update(1)
+        count += 1
+        logger.info("Step %d.Showing old IE info on volume %s." % (count, volume.split(" ")[1]))
+        oldInternetExplorer = oldIE.IE(volumeInfo=volume, mountDir=argv.mountDir, tempDir=argv.tempDir, osVersion=osVersion)
+        oldInternetExplorer.getTypedURL()
+        oldInternetExplorer.getIEHistory()
+        oldInternetExplorer.getIECookies()
+        oldInternetExplorer.getIEContents()
+        bar.update(1)
+        count += 1
+        logger.info("Step %d.Showing IE info on volume %s." % (count, volume.split(" ")[1]))
+        Explorer.Explorer(mountDir=argv.mountDir, volumeInfo=volume, bias=bias, outputDir=argv.outputDir).getKeyWordAtSearchbar()
+        bar.update(1)
+        count += 1
+        logger.info("Step %d.Showing Outlook info on volume %s." % (count, volume.split(" ")[1]))
+        outlook = Office.Office(mountDir=argv.mountDir, volumeInfo=volume, bias=bias, tempDir=argv.tempDir)
+        outlook.getOfficeFileMRU()
+        bar.update(1)
+        count += 1
+        logger.info("Step %d.Showing USB info on volume %s." % (count, volume.split(" ")[1]))
+        usbInfo.usbInfo(mountDir=argv.mountDir, volumeInfo=volume, bias=bias).getUsbVolumeName()
+        bar.update(1)
+        count += 1
+        logger.info("Step %d.Showing Shellbag info on volume %s." % (count, volume.split(" ")[1]))
+        explorer = Explorer.Explorer(mountDir=argv.mountDir, volumeInfo=volume, bias=bias, outputDir=argv.outputDir)
+        explorer.getShellBag()
+        explorer.getMapNetworkDriveMRU()
+        explorer.getRunMRU()
+        explorer.getJumpList()
+        explorer.showDesktopFiles()
+        explorer.extractThumbCacheFiles()
+        bar.update(1)
 
         count += 1
         logger.info("Step %d.Parsing sticky notes info on volume %s." % (count, volume.split(" ")[1]))
