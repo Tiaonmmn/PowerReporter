@@ -131,7 +131,7 @@ class IE:
                                                                                "%m/%d/%Y %H:%M:%S").strftime(
                             "%Y %m %d - %H:%M:%S")
                         result.append(tempResult)
-        logger.critical(result)
+
         return result
 
     def getIEContents(self):
@@ -165,10 +165,12 @@ class IE:
                         continue
 
                     if ("Windows XP" or "Windows 2000") in self.osVersion:
-                        cacheFolder = shellFolder.value("Cache").value().replace("%USERPROFILE%", os.getcwd() + "/" + userDir)
+                        cacheFolder = shellFolder.value("Cache").value().replace("%USERPROFILE%",
+                                                                                 os.getcwd() + "/" + userDir)
                         try:
                             temp = glob.glob(
-                                "../Documents and Settings/" + userDir + "/Local Settings/History/History.IE5/" + "/*.dat")[0]
+                                "../Documents and Settings/" + userDir + "/Local Settings/History/History.IE5/" + "/*.dat")[
+                                0]
                         except IndexError:
                             continue
                         if os.access(temp, os.F_OK | os.R_OK):
@@ -178,7 +180,8 @@ class IE:
                             continue
                     else:
                         cacheFolder = shellFolder.value("Cache").value().replace("%USERPROFILE%",
-                                                                                 os.getcwd() + "/" + userDir).replace("\\", "/")
+                                                                                 os.getcwd() + "/" + userDir).replace(
+                            "\\", "/")
                         if os.access(cacheFolder, os.F_OK | os.R_OK):
                             pass
                         else:
@@ -195,31 +198,74 @@ class IE:
                             logger.critical("Couldn't find Content Index.dat file on %s!" % os.getcwd() + filePath)
                     logger.info("Now showing Content Index.dat file %s info." % filePath)
                     logger.debug(subprocess.getoutput("msiecfinfo -v -a '%s' " % filePath))
-                    logger.info("Now parsing History Index.dat file.")
-                    output = subprocess.getoutput("pasco '%s' " % filePath)
+                    logger.info("Now parsing Contents Index.dat file.")
+                    # output = subprocess.getoutput("pasco '%s' " % filePath)
+                    # logger.debug(output)
+                    # output = output.splitlines()
+                    # reader = csv.reader(output[2:], delimiter='\t', quotechar="\n")
+                    # for line in reader:  # 0:TYPE,1:URL,2:MODIFIED TIME,3:ACCESS TIME,4:FILENAME,5:DIRECTORY,6:HTTP HEADERS
+                    #     if line[0] == "TYPE":
+                    #         continue
+                    #     tempResult = dict()
+                    #     logger.info("{0:15} : {1}".format("URL", line[1]))
+                    #     logger.info("{0:15} : {1}".format("Modified Time", line[2]))
+                    #     logger.info("{0:15} : {1}".format("Access Time", line[3]))
+                    #     logger.info("{0:15} : {1}".format("Filename", line[4]))
+                    #     logger.info("{0:15} : {1}".format("Directory", line[5]))
+                    #     logger.info("{0:15} : {1}".format("HTTP Headers", line[6]))
+                    #     tempResult['URL'] = line[1]
+                    #     try:
+                    #         tempResult['Access Time'] = datetime.datetime.strptime(line[3].split(".")[0],
+                    #                                                                "%m/%d/%Y %H:%M:%S").strftime(
+                    #             "%Y %m %d - %H:%M:%S")
+                    #     except ValueError:
+                    #         tempResult['Access Time'] = line[3]
+                    #     result.append(tempResult)
+                    output = subprocess.getoutput("msiecfexport -m all '%s'" % filePath)
                     logger.debug(output)
-                    output = output.splitlines()
-                    reader = csv.reader(output[2:], delimiter='\t', quotechar="\n")
-                    for line in reader:  # 0:TYPE,1:URL,2:MODIFIED TIME,3:ACCESS TIME,4:FILENAME,5:DIRECTORY,6:HTTP HEADERS
-                        if line[0] == "TYPE":
-                            continue
-                        tempResult = dict()
-                        logger.info("{0:15} : {1}".format("URL", line[1]))
-                        logger.info("{0:15} : {1}".format("Modified Time", line[2]))
-                        logger.info("{0:15} : {1}".format("Access Time", line[3]))
-                        logger.info("{0:15} : {1}".format("Filename", line[4]))
-                        logger.info("{0:15} : {1}".format("Directory", line[5]))
-                        logger.info("{0:15} : {1}".format("HTTP Headers", line[6]))
-                        tempResult['URL'] = line[1]
-                        try:
-                            tempResult['Access Time'] = datetime.datetime.strptime(line[3].split(".")[0],
-                                                                                   "%m/%d/%Y %H:%M:%S").strftime(
-                                "%Y %m %d - %H:%M:%S")
-                        except ValueError:
-                            tempResult['Access Time'] = line[3]
-                        result.append(tempResult)
-        logger.critical(result)
-        return result
+                    output = output.splitlines()[5:-1]
+                    count = 0
+                    while True:
+                        if "Record type" in output[count] and "URL" in output[count]:  # count=0
+                            logger.info("{0:20} : {1}".format("Record type", output[count][15:]))
+                            count += 1
+                            logger.info("{0:20} : {1}".format("Offset range", output[count][16:]))
+                            count += 1
+                            logger.info("{0:20} : {1}".format("Location", output[count][12:]))
+                            count += 1
+                            logger.info("{0:20} : {1}".format("Primary time", output[count][16:]))
+                            count += 1
+                            logger.info("{0:20} : {1}".format("Last checked time", output[count][21:]))
+                            count += 1
+                            logger.info("{0:20} : {1}".format("Filename", output[count][12]))
+                            count += 1
+                            logger.info("{0:20} : {1}".format("Cache directory name", output[count][24:]))
+                            count += 1
+                            logger.info("")
+                        if "Record type" in output[count] and "REDR" in output[count]:  # count=0
+                            logger.info("{0:20} : {1}".format("Record type", output[count][15:]))
+                            count += 1
+                            logger.info("{0:20} : {1}".format("Offset range", output[count][16:]))
+                            count += 1
+                            logger.info("{0:20} : {1}".format("Location", output[count][12:]))
+                            count += 1
+                            logger.info("")
+                        if "Record type" in output[count] and "LEAK" in output[count]:  # count=0
+                            logger.info("{0:20} : {1}".format("Record type", output[count][15:]))
+                            count += 1
+                            logger.info("{0:20} : {1}".format("Offset range", output[count][16:]))
+                            count += 1
+                            logger.info("{0:20} : {1}".format("Filename", output[count][12:]))
+                            count += 1
+                            logger.info("{0:20} : {1}".format("Cache directory index", output[count][25:]))
+                            count += 1
+                            logger.info("")
+                        count += 1
+                        if count == len(output):
+                            break
+
+        # logger.critical(result)
+        # return result
 
     def getIECookies(self):
         result = []
@@ -251,10 +297,12 @@ class IE:
                         continue
 
                     if ("Windows XP" or "Windows 2000") in self.osVersion:
-                        cookiesFolder = shellFolder.value("Cookies").value().replace("%USERPROFILE%", os.getcwd() + "/" + userDir)
+                        cookiesFolder = shellFolder.value("Cookies").value().replace("%USERPROFILE%",
+                                                                                     os.getcwd() + "/" + userDir)
                         try:
                             temp = glob.glob(
-                                "../Documents and Settings/" + userDir + "/Local Settings/History/History.IE5/" + "/*.dat")[0]
+                                "../Documents and Settings/" + userDir + "/Local Settings/History/History.IE5/" + "/*.dat")[
+                                0]
                         except IndexError:
                             continue
                         if os.access(temp, os.F_OK | os.R_OK):
@@ -264,8 +312,9 @@ class IE:
                             continue
                     else:
                         cookiesFolder = shellFolder.value("Cookies").value().replace("%USERPROFILE%",
-                                                                                     os.getcwd() + "/" + userDir).replace("\\",
-                                                                                                                          "/")
+                                                                                     os.getcwd() + "/" + userDir).replace(
+                            "\\",
+                            "/")
                         if os.access(cookiesFolder, os.F_OK | os.R_OK):
                             pass
                         else:
@@ -305,5 +354,5 @@ class IE:
                                                                                "%m/%d/%Y %H:%M:%S").strftime(
                             "%Y %m %d - %H:%M:%S")
                         result.append(tempResult)
-        logger.critical(result)
+
         return result
