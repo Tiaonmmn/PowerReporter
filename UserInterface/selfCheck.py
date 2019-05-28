@@ -103,8 +103,11 @@ def selfCheck():
     registry = Checker(name="python-registry", package="Registry",
                        reason="Python parser of Windows registry").checkModule()
     termcolor = Checker(name="termcolor", package="termcolor", reason="terminal color").checkModule()
+    compoundfiles = Checker(name="compoundfiles", package="compoundfiles", reason="LNK parse").checkModule()
+    striprtf = Checker(name="striprtf", package="striprtf", reason="strip RTF to normal text").checkModule()
+    magic = Checker(name="python-magic", package="python-magic", reason="python magic file recognizer").checkModule()
+    bintrees = Checker(name="bintrees", package="bintrees", reason="python olefile depends").checkModule()
     evtx = Checker(name="python-Evtx", package="Evtx", reason="Parser for Windows new version event logs").checkModule()
-
     # results = [*locals()]
     result = locals()
     for key in result:

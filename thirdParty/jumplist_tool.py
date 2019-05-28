@@ -2,7 +2,8 @@ import re
 from io import BytesIO
 
 from .olefile.olefile import OleFileIO, STGTY_STREAM, OleDirectoryEntry
-from .pylnk.pylnk import Lnk, for_file, TypedPropertyValue, PropertyStore, ExtraData_PropertyStoreDataBlock, ExtraData
+from thirdParty.pylnk import Lnk, for_file, TypedPropertyValue, PropertyStore, ExtraData_PropertyStoreDataBlock, \
+    ExtraData
 import struct
 
 
