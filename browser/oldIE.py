@@ -1,12 +1,11 @@
-from Registry import Registry
+import csv
+import datetime
+import glob
 import os
 import subprocess
-import csv
-import glob
-import binascii
-import datetime
+
+from Registry import Registry
 from loguru import logger
-import urllib
 
 
 class IE:
